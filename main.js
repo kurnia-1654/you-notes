@@ -454,21 +454,7 @@ $(document).ready(function () {
 
     
     
-    function closeEditNote() {
-        
-        $('.add-note').css({
-            right: '-100vw',
-        }).hide(150)
 
-        
-
-        $('.form-note-input textarea').val("").height(20)
-        $('.last-mod').hide()
-        $('main').fadeIn(150)
-        $('.more-menu-list').hide()
-
-        history.back()
-    }
 
 
     
@@ -838,63 +824,7 @@ $(document).ready(function () {
     })
 
 
-    function editNote(){
-        var id = $('.note').attr('id') 
-        $('.note').click(function () {
-            
-
-            let index = JSON.parse(localStorage.getItem('notes'))[id][id]
-            // console.log(index);
-            
-            history.pushState('edit-note', '')
-            popStateCloseOverlay()
-
-            var title = index.title
-            var note = index.note
-            var date = index.date
-            var mod = index.mod_date
-            console.log(mod);
-            var label = index.label
-            var pin = false
-            
-            // alert(id)
-
-            // console.log(mod);
-
-            // console.log(note);
-            $('.add-note').show(0).css({
-                right: 0
-            })
-
-            
-            if($(this).parent().attr('id') == 'pinned-notes') {
-                
-                $('.pin').addClass('pinned')
-            }
-            $('main').fadeOut(0)
-
-            $('.add-note .note-title').val(title)
-            $('.add-note .note-body').val(note)
-            var titleHeight = document.querySelector('.note-title').scrollHeight
-            var noteHeight = document.querySelector('.note-body').scrollHeight
-            // console.log(titleHeight, noteHeight);
-            $('.add-note .note-title').innerHeight(titleHeight)
-            $('.add-note .note-body').innerHeight(noteHeight)
-            $('.date-created span').text(date)
-            
-            $('.last-mod').show(0).children().html(mod)
-
-
-
-        })
-
-        
-        back_btn.click(()=> {
-            saveEditedNote(id);
-            closeEditNote()
-
-        })
-    }
+    
 
 
     function loadNote() {
@@ -948,6 +878,165 @@ $(document).ready(function () {
         
 
 
+    }
+
+
+   
+    
+    function editNote(){
+        var id = $('.note').attr('id') 
+        $('.note').click(function () {
+            
+    
+            let index = JSON.parse(localStorage.getItem('notes'))[id][id]
+            // console.log(index);
+            
+            history.pushState('edit-note', '')
+            
+    
+            var title = index.title
+            var note = index.note
+            var date = index.date
+            var mod = index.mod_date
+            console.log(mod);
+            var label = index.label
+            var pin = false
+            
+            // alert(id)
+    
+            // console.log(mod);
+    
+            // console.log(note);
+            $('.add-note').show(0).css({
+                right: 0
+            })
+    
+            
+            if($(this).parent().attr('id') == 'pinned-notes') {
+                
+                $('.pin').addClass('pinned')
+            }
+            $('main').fadeOut(0)
+    
+            $('.add-note .note-title').val(title)
+            $('.add-note .note-body').val(note)
+            var titleHeight = document.querySelector('.note-title').scrollHeight
+            var noteHeight = document.querySelector('.note-body').scrollHeight
+            // console.log(titleHeight, noteHeight);
+            $('.add-note .note-title').innerHeight(titleHeight)
+            $('.add-note .note-body').innerHeight(noteHeight)
+            $('.date-created span').text(date)
+            
+            $('.last-mod').show(0).children().html(mod)
+    
+            if(history.state == 'edit-note') {
+                alert('editnote')
+                window.onpopstate = function () {
+                    saveEditedNote(id)
+                    closeEditNote()
+                    
+                }
+        
+                $('.back-btn').click(()=> {
+                    saveEditedNote(id);
+                    closeEditNote()
+                    
+                })
+            }
+    
+        })
+    
+    
+        
+    }
+    
+    
+    function closeEditNote() {
+            
+        $('.add-note').css({
+            right: '-100vw',
+        }).hide(150)
+    
+        
+    
+        $('.form-note-input textarea').val("").height(20)
+        $('.last-mod').hide()
+        $('main').fadeIn(150)
+        $('.more-menu-list').hide()
+    
+        history.back()
+    }
+    
+    
+    function saveEditedNote(id) { // will be called in editNote()
+        // console.log('false'); 
+        var title = $('.note-title').val()
+    
+        var note = $('.note-body').val()
+        var mod = $('.last-mod span').html()
+        var date = $('.date-created span').html()
+        var pinned = false
+            if($('.pin').hasClass('pinned')) pinned = true;
+    
+        var label = ''
+        if ($('li.labels').eq(1).length == 0) label = 'null'; else label = $('li.labels').eq(1).attr('value')
+    
+        var editedNote = {
+            [id]: {
+                "title": title,
+                "date": date,
+                "mod_date": mod,
+                "note": note,
+                "label": label,
+                "pinned": pinned,
+                "bg": false,
+                "bg_url": "icon/ic-label.svg",
+                "thumb": false,
+                "thumb_url": "",
+                "color_theme": "default"
+            }
+        }
+    
+        console.log(editedNote);
+    
+        // Comparing value of two object
+        var obj = JSON.parse(localStorage.getItem('notes'))
+        var oldNote = JSON.stringify(obj[id][id])
+        
+        console.log(JSON.stringify(editedNote[id]) === oldNote)
+        // console.log(oldNote);
+        // console.log(JSON.stringify(editedNote[id]));
+    
+        // alert('{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}' === '{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}')
+        
+        // alert(oldNote === editNote[id])
+        if(JSON.stringify(editedNote[id]) !== oldNote) {
+            var newNoteArr = [] 
+            let n = Object.keys(obj).length
+    
+            console.log(n);
+    
+            
+            for (let i = n-1; i >= n; i++){
+                console.log('id: ' + id);
+                console.log("JSON.stringify(obj[i]) : "+JSON.stringify(obj[i]));
+                
+                if(i != id) newNoteArr.push(obj[i]) // for filtering oldnote that has edited
+                
+            }
+            
+            console.log("editedNote[id]) : " + JSON.stringify(editedNote));
+            newNoteArr.push(editedNote) // after all notes filtered, then push edited note to the last index
+    
+            
+            console.log(newNoteArr);
+    
+            localStorage.setItem('notes', JSON.stringify(newNoteArr))
+    
+            loadNote()
+        } 
+        
+        editedNote = {}
     }
 
 
@@ -1027,77 +1116,7 @@ $(document).ready(function () {
     }
 
 
-    function saveEditedNote(id) { // will be called in editNote()
-        // console.log('false'); 
-        var title = $('.note-title').val()
-
-        var note = $('.note-body').val()
-        var mod = $('.last-mod span').html()
-        var date = $('.date-created span').html()
-        var pinned = false
-            if($('.pin').hasClass('pinned')) pinned = true;
-
-        var label = ''
-        if ($('li.labels').eq(1).length == 0) label = 'null'; else label = $('li.labels').eq(1).attr('value')
-
-        var editedNote = {
-            [id]: {
-                "title": title,
-                "date": date,
-                "mod_date": mod,
-                "note": note,
-                "label": label,
-                "pinned": pinned,
-                "bg": false,
-                "bg_url": "icon/ic-label.svg",
-                "thumb": false,
-                "thumb_url": "",
-                "color_theme": "default"
-            }
-        }
-
-        // console.log(editedNote[id]);
-
-        // Comparing value of two object
-        var obj = JSON.parse(localStorage.getItem('notes'))
-        var oldNote = JSON.stringify(obj[id][id])
-        
-        console.log(JSON.stringify(editedNote[id]) === oldNote)
-        console.log(oldNote);
-        console.log(JSON.stringify(editedNote[id]));
-
-        // alert('{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}' === '{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}')
-        
-        // alert(oldNote === editNote[id])
-        if(JSON.stringify(editedNote[id]) !== oldNote) {
-            var newNoteArr = [] 
-            let n = Object.keys(obj).length
-
-            console.log(n);
-
-            
-            for (let i = 0; i < n; i++){
-                console.log('id: ' + id);
-                console.log("JSON.stringify(obj[i]) : "+JSON.stringify(obj[i]));
-                
-                if(i != id) newNoteArr.push(obj[i]) // for filtering oldnote that has edited
-                
-            }
-            
-            // console.log("editedNote[id]) : " + JSON.stringify(editedNote[id]));
-            newNoteArr.push(editedNote) // after all notes filtered, then push edited note to the last index
-
-            
-            console.log(newNoteArr);
-
-            // if (history.state = 'edit-note') localStorage.setItem('notes', JSON.stringify(newNoteArr))
-
-            loadNote()
-        } 
-        
-        editedNote = {}
-    }
-
+    
 
     
     
