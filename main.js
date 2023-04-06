@@ -467,9 +467,9 @@ $(document).ready(function () {
             right: '-100vw',
         }).hide(150)
 
-        $('.del-lbl').parent().remove()
-
+        
         saveToLocal(); 
+        $('.del-lbl').parent().remove()
         
 
         $('.form-note-input textarea').val("").height(20)
@@ -745,13 +745,7 @@ $(document).ready(function () {
 
                 popStateCloseOverlay()
             }
-        } else if (history.state == 'add-note') {
-
-            window.onpopstate = function () {
-                closeAddNote()
-                popStateCloseOverlay()
-            }
-        } else if (history.state == 'edit-note') {
+        }else if (history.state == 'edit-note') {
 
             window.onpopstate = function () {
                 closeEditNote()
@@ -910,7 +904,7 @@ $(document).ready(function () {
             var mod = index.mod_date
             console.log(mod);
             var label = index.label
-            console.log(label);
+            // console.log(label);
     
             
             $('.add-note').show(0).css({
@@ -937,7 +931,11 @@ $(document).ready(function () {
             $('.date-created span').text(date)
             
             $('.last-mod').show(0).children().html(mod)
-            $('.note-label').append('<li class="label"><span class="icon edit"></span><span class="name">' + label + '</span></li>')
+            
+            if(label != 'null') {
+                $('.note-label').append('<li class="labels" value="' + label + '"><span></span>' + label + '<span class="del-lbl">x</span></li>')
+                removeLabel()
+            }
 
             
 
@@ -955,6 +953,7 @@ $(document).ready(function () {
             
                 var label = ''
                 if ($('li.labels').eq(1).length == 0) label = 'null'; else label = $('li.labels').eq(1).attr('value')
+                // if ($('.note-label').length == 0) label = 'null'; else label = $('.note-label .label .name').text()
                 
                 // $('.act-set-label').click(() => {
                 //     var selectedLabel = $('.label-selection').find('option:selected')
@@ -1056,7 +1055,8 @@ $(document).ready(function () {
     
     
     function saveEditedNote(editedNote, oldNote, obj, id) { // will be called in editNote()
-        
+        alert(id)
+
         console.log(editedNote);
         console.log(oldNote);
     
@@ -1079,8 +1079,8 @@ $(document).ready(function () {
             
             for (let i = n - 1; i >= 0; i--){
                 // console.log('id: ' + id);
-                console.log("JSON.stringify(obj[i]) : "+JSON.stringify(obj[i]));
-                
+                // console.log("JSON.stringify(obj[i]) : "+JSON.stringify(obj[i]));
+                // alert(i != id)
                 if(i != id) newNoteArr.push(obj[i]) // for filtering oldnote that has edited
                 
             }
@@ -1118,9 +1118,12 @@ $(document).ready(function () {
         var pinned = false
             if($('.pin').hasClass('pinned')) pinned = true;
 
-        var label = ''
+        var label = 'null'
         // console.log('label' + $('li.labels').eq(1).attr('value') );
-        if ($('li.labels').eq(1).length == 0) label = 'null'; else label = $('li.labels').eq(1).attr('value')
+        if ($('li.labels').eq(1).length > 0) {
+            label = $('li.labels').eq(1).attr('value')
+            alert(label)
+        }
 
         
         if (title || note !== '') {
@@ -1152,8 +1155,9 @@ $(document).ready(function () {
                     "color_theme": "default"
                 }
             }
-
+            console.log(label);
             console.log(newNoteObj);
+            
             var newNotes = []
 
             if (localStorage.getItem('notes') == '') {
