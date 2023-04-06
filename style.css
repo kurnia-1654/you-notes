@@ -1157,7 +1157,7 @@ button.add-label .plus-icon{
 
 
 /* Notes Styling*/
-.notes-wrapper{
+.notes-wrapper, .deleted-wrapper{
     width: calc(100vw - 44px);
     height: calc(100vh - 107px);
     margin: 60px auto 35px;
@@ -1166,7 +1166,7 @@ button.add-label .plus-icon{
     display: none;
 }
 
-#pinned-notes, #all-notes {
+#pinned-notes, #all-notes, #deleted-notes {
     column-count: 2;
     column-gap: 10px;
     grid-template-columns: 1fr 1fr;
@@ -1188,7 +1188,7 @@ button.add-label .plus-icon{
 
 
 
-#pinned-notes .note, #all-notes .note{
+#pinned-notes .note, #all-notes .note, #deleted-notes .note{
 
     display: grid;
     grid-template-columns: repeat(1fr);
@@ -1201,6 +1201,24 @@ button.add-label .plus-icon{
     border-radius: 10px;
 }
 
+#deleted-notes .note {
+    padding: 12px;
+}
+
+.deleted-wrapper > .info {
+    display: block;
+    font-family: 'Comfortaa';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center;
+    
+    margin:25px auto 42px;
+    
+    max-width: 250px;
+    
+}
 
 .note .pinned {
     background: url(icon/ic-pinned-2.svg);

@@ -192,12 +192,45 @@ $(document).ready(function () {
 
 
     function showTrash() {
+        if (localStorage.getItem('deleted') == null) {
+            $('.empty-trash-info').show()
+        }else{
+            $('.empty-trash-info').hide()
+            $('#deleted-notes').show()
+            $('.deleted-wrapper').show()
+            var deleted = JSON.parse(localStorage.getItem('deleted'))
+            var deletedObj  = Object.assign({}, deleted) // convert array to obj
+            $('#deleted-notes').children().remove()
+            
+            let n = Object.keys(deletedObj).length
+    
+            for (let a = n - 1; a >= 0; a--) { 
+                
+                if(deletedObj[a].pinned == true) { 
+                    $('#deleted-notes').append('<div class="note" id="' + a + '"><img class="thumbnail" alt=""/><h2 class="title">' + deletedObj[a].title + '</h2><p class="text">' + deletedObj[a].note + '</p><div class="info"><span class="date">' + deletedObj[a].date + '</span><span class="lbl"><span class="icon"></span>' + deletedObj[a].label + '</span><span style="display:none" class="mod-date">' + deletedObj[a].mod_date + '</div></div>')
+                }else {
+                    $('#deleted-notes').append('<div class="note" id="' + a + '"><img class="thumbnail" alt=""/><h2 class="title">' + deletedObj[a].title + '</h2><p class="text">' + deletedObj[a].note + '</p><div class="info"><span class="date">' + deletedObj[a].date + '</span><span class="lbl"><span class="icon"></span>' + deletedObj[a].label + '</span><span style="display:none" class="mod-date">' + deletedObj[a].mod_date + '</div></div>')
+                }
+            }
+
+            for (let b = 0; b < n; b++){
+                $('#deleted-notes .lbl').eq(b).text('in Trash')
+
+            }
+
+        }
+
+
+
+        
+
         trash_view = true
         note_view = false
+        history.go(-2)
         closeMenu()
         $('.empty-notes').hide()
         $('.notes-wrapper').hide()
-        $('.empty-trash-info').show()
+        
         $('.searchbox').text('Search your trash...')
         add_note.hide()
     }
@@ -706,10 +739,34 @@ $(document).ready(function () {
         })
     }
 
-    $('li.delete').click(function () {
-        showTrash()
-        closeAddNote()
-    })
+
+
+    function deleteNote(note){
+        $('li.delete').click(function () {
+            
+            var newDeleted = []
+            console.log(note);
+            if (localStorage.getItem('deleted') == null){
+                newDeleted.push(JSON.parse(note))
+                console.log(newDeleted);
+                localStorage.setItem('deleted', JSON.stringify(newDeleted) )
+            }else {
+                var deleted = JSON.parse(localStorage.getItem('deleted'))
+                console.log(deleted);
+                
+                deleted.forEach(note => {
+                    newDeleted.push(note)
+                });
+
+                newDeleted.push(JSON.parse(note))
+                localStorage.setItem('deleted', JSON.stringify(newDeleted) )
+            }
+
+
+            showTrash()
+            closeEditNote()
+        })
+    }
 
     // Share
     $('li.share').click(function () {
@@ -891,7 +948,7 @@ $(document).ready(function () {
         $('.note').click(function () {
             var id = $(this).attr('id') 
             
-    
+            
             let index = JSON.parse(localStorage.getItem('notes'))[id]
             // console.log(index);
             
@@ -1007,7 +1064,7 @@ $(document).ready(function () {
             var oldNote = JSON.stringify(obj[id])
             console.log(oldNote);
 
-
+            deleteNote(oldNote) 
             
             if(history.state == 'edit-note') {
                 
