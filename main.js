@@ -741,9 +741,24 @@ $(document).ready(function () {
 
 
 
-    function deleteNote(note){
+    function deleteNote(note, obj, id){
         $('li.delete').click(function () {
             
+            // To delete note from notes index
+            var newNoteArr = [] 
+            let n = Object.keys(obj).length
+            
+            for (let i = n - 1; i >= 0; i--){
+                if(i != id) newNoteArr.push(obj[i]) // for filtering oldnote that deleted
+            }
+            
+            localStorage.setItem('notes', JSON.stringify(newNoteArr))
+            loadNote()
+
+            // End
+
+
+
             var newDeleted = []
             console.log(note);
             if (localStorage.getItem('deleted') == null){
@@ -1064,7 +1079,7 @@ $(document).ready(function () {
             var oldNote = JSON.stringify(obj[id])
             console.log(oldNote);
 
-            deleteNote(oldNote) 
+            deleteNote(oldNote, obj, id) 
             
             if(history.state == 'edit-note') {
                 
@@ -1127,7 +1142,7 @@ $(document).ready(function () {
         
         // alert(oldNote === editNote[id])
         if(JSON.stringify(editedNote) !== oldNote) {
-            // alert('edited note != oldnote') OK
+            
             var newNoteArr = [] 
             let n = Object.keys(obj).length
             
@@ -1135,9 +1150,6 @@ $(document).ready(function () {
     
             
             for (let i = n - 1; i >= 0; i--){
-                // console.log('id: ' + id);
-                // console.log("JSON.stringify(obj[i]) : "+JSON.stringify(obj[i]));
-                // alert(i != id)
                 if(i != id) newNoteArr.push(obj[i]) // for filtering oldnote that has edited
                 
             }
@@ -1145,8 +1157,6 @@ $(document).ready(function () {
             console.log("editedNote[id]) : " + JSON.stringify(editedNote));
             newNoteArr.push(editedNote) // after all notes filtered, then push edited note to the last index
     
-            
-            console.log('newNoteArr : ' + newNoteArr);
     
             localStorage.setItem('notes', JSON.stringify(newNoteArr))
             loadNote()
