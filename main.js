@@ -447,6 +447,7 @@ $(document).ready(function () {
 
         back_btn.click(()=> {
             closeAddNote()
+            history.back()
         })
 
         popStateCloseOverlay()
@@ -828,23 +829,28 @@ $(document).ready(function () {
 
 
     function loadNote() {
+        
 
         if (localStorage.getItem('notes') != '') {
+            
             var notes = JSON.parse(localStorage.getItem('notes'))
             var notesObj  = Object.assign({}, notes) // convert array to obj
             $('#pinned-notes, #all-notes').children().remove()
+            $('#pinned-notes, #all-notes, .all').css('display', 'none')
+            $('.notes-wrapper > span').eq(0).css('display', 'none')
 
             let n = Object.keys(notesObj).length
     
+
             for (let a = n - 1; a >= 0; a--) { 
                 
-                if(notesObj[a][a].pinned == true) { 
+                if(notesObj[a].pinned == true) { 
                     $('.notes-wrapper > span').eq(0).css('display', 'block')
                     $('#pinned-notes').css('display', 'block')
-                    $('#pinned-notes').append('<div class="note" id="' + a + '"><span class="icon pinned"></span><img class="thumbnail" alt=""/><h2 class="title">' + notesObj[a][a].title + '</h2><p class="text">' + notesObj[a][a].note + '</p><div class="info"><span class="date">' + notesObj[a][a].date + '</span><span class="lbl"><span class="icon"></span>' + notesObj[a][a].label + '</span><span style="display:none" class="mod-date">' + notesObj[a][a].mod_date + '</div></div>')
+                    $('#pinned-notes').append('<div class="note" id="' + a + '"><span class="icon pinned"></span><img class="thumbnail" alt=""/><h2 class="title">' + notesObj[a].title + '</h2><p class="text">' + notesObj[a].note + '</p><div class="info"><span class="date">' + notesObj[a].date + '</span><span class="lbl"><span class="icon"></span>' + notesObj[a].label + '</span><span style="display:none" class="mod-date">' + notesObj[a].mod_date + '</div></div>')
                 }else {
                     $('#all-notes, .all').css('display', 'block')
-                    $('#all-notes').append('<div class="note" id="' + a + '"><span class="icon pinned" style="visibility:hidden"></span><img class="thumbnail" alt=""/><h2 class="title">' + notesObj[a][a].title + '</h2><p class="text">' + notesObj[a][a].note + '</p><div class="info"><span class="date">' + notesObj[a][a].date + '</span><span class="lbl"><span class="icon"></span>' + notesObj[a][a].label + '</span><span style="display:none" class="mod-date">' + notesObj[a][a].mod_date + '</div></div>')
+                    $('#all-notes').append('<div class="note" id="' + a + '"><span class="icon pinned" style="visibility:hidden"></span><img class="thumbnail" alt=""/><h2 class="title">' + notesObj[a].title + '</h2><p class="text">' + notesObj[a].note + '</p><div class="info"><span class="date">' + notesObj[a].date + '</span><span class="lbl"><span class="icon"></span>' + notesObj[a].label + '</span><span style="display:none" class="mod-date">' + notesObj[a].mod_date + '</div></div>')
                 }
             }
             for (let b = 0; b < n; b++){
@@ -884,14 +890,14 @@ $(document).ready(function () {
    
     
     function editNote(){
-        var id = $('.note').attr('id') 
         $('.note').click(function () {
+            var id = $(this).attr('id') 
             
     
-            let index = JSON.parse(localStorage.getItem('notes'))[id][id]
+            let index = JSON.parse(localStorage.getItem('notes'))[id]
             // console.log(index);
             
-            history.pushState('edit-note', '')
+            history.pushState('edit-note', null, id)
             
     
             var title = index.title
@@ -929,18 +935,95 @@ $(document).ready(function () {
             
             $('.last-mod').show(0).children().html(mod)
     
-            if(history.state == 'edit-note') {
-                alert('editnote')
-                window.onpopstate = function () {
-                    saveEditedNote(id)
-                    closeEditNote()
-                    
+           var editedNote
+
+           function makeNewNoteObj() {
+                // get new value of note to be saved
+                var title = $('.note-title').val()
+                var id = $(location).attr('pathname').substring(1)
+                var note = $('.note-body').val()
+                var mod = $('.last-mod span').html()
+                var date = $('.date-created span').html()
+                var pinned = $('.pin').hasClass('pinned')
+            
+                var label = ''
+                if ($('li.labels').eq(1).length == 0) label = 'null'; else label = $('li.labels').eq(1).attr('value')
+                
+                // $('.act-set-label').click(() => {
+                //     var selectedLabel = $('.label-selection').find('option:selected')
+                //     if (selectedLabel.val() != $('.label-selection option:eq(0)').val()) {
+                //         label = selectedLabel.val()
+                //         console.log(label);
+                //     }
+                //     // console.log(label);
+                // })
+                 
+                var editedNoteObj = {
+                    [id]: {
+                        "title": title,
+                        "date": date,
+                        "mod_date": mod,
+                        "note": note,
+                        "label": label,
+                        "pinned": pinned,
+                        "bg": false,
+                        "bg_url": "icon/ic-label.svg",
+                        "thumb": false,
+                        "thumb_url": "",
+                        "color_theme": "default"
+                    }
                 }
+
+                return editedNoteObj[id]
+           }
+            
+
+            // $('textarea').on('input', function(){
+            //    editedNote = makeNewNoteObj()
+            // })
+
+            // $('.pin').click(function(){
+            //     editedNote = makeNewNoteObj() 
+            //     console.log(editedNote);
+            // }) 
+            
+            // $('.act-set-label').click(() => {
+            //     editedNote = makeNewNoteObj() 
+            //     console.log(editedNote);
+            // })
+
+           
+
+            
+
+             
+            var obj = JSON.parse(localStorage.getItem('notes'))
+            var oldNote = JSON.stringify(obj[id][id])
+
+
+            if(history.state == 'edit-note') {
+                
+                window.onpopstate = function () {
+                    editedNote = makeNewNoteObj() 
+                    saveEditedNote(editedNote, oldNote, obj)
+                } 
+                
+                // function save(e){
+
+                //     // console.log(editNote); // not executed
+                //     saveEditedNote(e, oldNote, obj)
+                // }
+               
         
                 $('.back-btn').click(()=> {
-                    saveEditedNote(id);
-                    closeEditNote()
-                    
+                    // editedNote = makeNewNoteObj() 
+                    // alert(editedNote)
+                }, function(){
+                    // console.log('back btn');
+                    // alert(editedNote)
+                    // console.log(editedNote);
+
+                    saveEditedNote(makeNewNoteObj(), oldNote, obj)
                 })
             }
     
@@ -968,49 +1051,21 @@ $(document).ready(function () {
     }
     
     
-    function saveEditedNote(id) { // will be called in editNote()
-        // console.log('false'); 
-        var title = $('.note-title').val()
-    
-        var note = $('.note-body').val()
-        var mod = $('.last-mod span').html()
-        var date = $('.date-created span').html()
-        var pinned = false
-            if($('.pin').hasClass('pinned')) pinned = true;
-    
-        var label = ''
-        if ($('li.labels').eq(1).length == 0) label = 'null'; else label = $('li.labels').eq(1).attr('value')
-    
-        var editedNote = {
-            [id]: {
-                "title": title,
-                "date": date,
-                "mod_date": mod,
-                "note": note,
-                "label": label,
-                "pinned": pinned,
-                "bg": false,
-                "bg_url": "icon/ic-label.svg",
-                "thumb": false,
-                "thumb_url": "",
-                "color_theme": "default"
-            }
-        }
-    
-        console.log(editedNote);
-    
-        // Comparing value of two object
-        var obj = JSON.parse(localStorage.getItem('notes'))
-        var oldNote = JSON.stringify(obj[id][id])
+    function saveEditedNote(editedNote, oldNote, obj) { // will be called in editNote()
         
-        console.log(JSON.stringify(editedNote[id]) === oldNote)
+        console.log(editedNote);
+        console.log(oldNote);
+    
+       
+        
+        // console.log(JSON.stringify(editedNote[id]) === oldNote)
         // console.log(oldNote);
         // console.log(JSON.stringify(editedNote[id]));
     
         // alert('{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}' === '{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}')
         
         // alert(oldNote === editNote[id])
-        if(JSON.stringify(editedNote[id]) !== oldNote) {
+        if(JSON.stringify(editedNote) !== oldNote) {
             var newNoteArr = [] 
             let n = Object.keys(obj).length
     
@@ -1029,14 +1084,16 @@ $(document).ready(function () {
             newNoteArr.push(editedNote) // after all notes filtered, then push edited note to the last index
     
             
-            console.log(newNoteArr);
+            console.log('newNoteArr : ' + newNoteArr);
     
             localStorage.setItem('notes', JSON.stringify(newNoteArr))
-    
             loadNote()
+            
         } 
+        closeEditNote()
         
         editedNote = {}
+        
     }
 
 
@@ -1095,18 +1152,19 @@ $(document).ready(function () {
             var newNotes = []
 
             if (localStorage.getItem('notes') == '') {
-                newNotes.push(newNoteObj)
+                newNotes.push(newNoteObj[n])
                 localStorage.setItem('notes', JSON.stringify(newNotes))
 
             } else {
                 let arr = JSON.parse(localStorage.getItem('notes'))
-
+                
                 arr.forEach(e => {
                     newNotes.push(e)
+                    console.log(e);
                 });
-                newNotes.push(newNoteObj)
+                newNotes.push(newNoteObj[n])
                 console.log(newNotes);
-
+                
                 
                 localStorage.setItem('notes', JSON.stringify(newNotes))
             }
