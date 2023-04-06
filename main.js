@@ -693,12 +693,16 @@ $(document).ready(function () {
 
 
     function showLabelSelected(label) {
+        $('.note-label').children().remove()
         $('.note-label').append('<li class="labels" value="' + label + '"><span></span>' + label + '<span class="del-lbl">x</span></li>')
     }
 
     function removeLabel() {
         $('.del-lbl').click(function () {
             $(this).parent().remove()
+            $('.label-selection').children().eq(0).siblings().find('option:disabled').removeAttr('disabled')
+            console.log($('.label-selection').children());
+            labelChosed = ''
         })
     }
 
@@ -841,7 +845,7 @@ $(document).ready(function () {
 
             let n = Object.keys(notesObj).length
     
-
+            console.log(n);
             for (let a = n - 1; a >= 0; a--) { 
                 
                 if(notesObj[a].pinned == true) { 
@@ -861,9 +865,9 @@ $(document).ready(function () {
 
             }
 
-            editNote()
         }
         // console.log(typeof(notes));
+        editNote()
         
 
         // Using for loop  to conver arr to object
@@ -906,13 +910,9 @@ $(document).ready(function () {
             var mod = index.mod_date
             console.log(mod);
             var label = index.label
-            var pin = false
+            console.log(label);
+    
             
-            // alert(id)
-    
-            // console.log(mod);
-    
-            // console.log(note);
             $('.add-note').show(0).css({
                 right: 0
             })
@@ -921,7 +921,10 @@ $(document).ready(function () {
             if($(this).parent().attr('id') == 'pinned-notes') {
                 
                 $('.pin').addClass('pinned')
+            }else {
+                $('.pin').removeClass('pinned')
             }
+
             $('main').fadeOut(0)
     
             $('.add-note .note-title').val(title)
@@ -934,6 +937,10 @@ $(document).ready(function () {
             $('.date-created span').text(date)
             
             $('.last-mod').show(0).children().html(mod)
+            $('.note-label').append('<li class="label"><span class="icon edit"></span><span class="name">' + label + '</span></li>')
+
+            
+
     
            var editedNote
 
@@ -998,37 +1005,34 @@ $(document).ready(function () {
 
              
             var obj = JSON.parse(localStorage.getItem('notes'))
-            var oldNote = JSON.stringify(obj[id][id])
+            var oldNote = JSON.stringify(obj[id])
+            console.log(oldNote);
 
 
+            
             if(history.state == 'edit-note') {
                 
                 window.onpopstate = function () {
-                    editedNote = makeNewNoteObj() 
-                    saveEditedNote(editedNote, oldNote, obj)
+                    $('.back-btn').unbind('click')
+                    alert(JSON.stringify(makeNewNoteObj()))
+                    saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
                 } 
                 
                 // function save(e){
-
+    
                 //     // console.log(editNote); // not executed
                 //     saveEditedNote(e, oldNote, obj)
                 // }
                
         
                 $('.back-btn').click(()=> {
-                    // editedNote = makeNewNoteObj() 
-                    // alert(editedNote)
-                }, function(){
-                    // console.log('back btn');
-                    // alert(editedNote)
-                    // console.log(editedNote);
-
-                    saveEditedNote(makeNewNoteObj(), oldNote, obj)
+                    $('.back-btn').unbind('click')
+                    alert(JSON.stringify(makeNewNoteObj()))
+                    saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
                 })
             }
-    
         })
-    
+        
     
         
     }
@@ -1041,17 +1045,17 @@ $(document).ready(function () {
         }).hide(150)
     
         
-    
-        $('.form-note-input textarea').val("").height(20)
-        $('.last-mod').hide()
         $('main').fadeIn(150)
-        $('.more-menu-list').hide()
+    
+        // $('.form-note-input textarea').val("").height(20)
+        // $('.last-mod').hide()
+        // $('.more-menu-list').hide()
     
         history.back()
     }
     
     
-    function saveEditedNote(editedNote, oldNote, obj) { // will be called in editNote()
+    function saveEditedNote(editedNote, oldNote, obj, id) { // will be called in editNote()
         
         console.log(editedNote);
         console.log(oldNote);
@@ -1066,14 +1070,15 @@ $(document).ready(function () {
         
         // alert(oldNote === editNote[id])
         if(JSON.stringify(editedNote) !== oldNote) {
+            // alert('edited note != oldnote') OK
             var newNoteArr = [] 
             let n = Object.keys(obj).length
-    
+            
             console.log(n);
     
             
-            for (let i = n-1; i >= n; i++){
-                console.log('id: ' + id);
+            for (let i = n - 1; i >= 0; i--){
+                // console.log('id: ' + id);
                 console.log("JSON.stringify(obj[i]) : "+JSON.stringify(obj[i]));
                 
                 if(i != id) newNoteArr.push(obj[i]) // for filtering oldnote that has edited
@@ -1092,7 +1097,7 @@ $(document).ready(function () {
         } 
         closeEditNote()
         
-        editedNote = {}
+        
         
     }
 
@@ -1164,7 +1169,7 @@ $(document).ready(function () {
                 });
                 newNotes.push(newNoteObj[n])
                 console.log(newNotes);
-                
+
                 
                 localStorage.setItem('notes', JSON.stringify(newNotes))
             }
