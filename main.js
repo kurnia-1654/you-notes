@@ -819,10 +819,10 @@ $(document).ready(function () {
 
                 popStateCloseOverlay()
             }
-        }else if (history.state == 'edit-note') {
+        }else if (history.state == 'add-note') {
 
             window.onpopstate = function () {
-                closeEditNote()
+                closeAddNote()
                 popStateCloseOverlay()
             }
         } else if (history.state == 'menu') {
