@@ -269,6 +269,9 @@ $(document).ready(function () {
                 empty_note = true
                 checkNote()
             }
+        }else {
+            empty_note = true
+            checkNote()
         }
        
         
