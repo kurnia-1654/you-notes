@@ -471,7 +471,10 @@ $(document).ready(function () {
         })
         $('.pin').removeClass('pinned')
         $('main').fadeOut(0)
-
+        $('.del-lbl').parent().remove()
+        $('.form-note-input textarea').val("").height(20)
+        $('.last-mod').hide()
+        $('.more-menu-list').hide()
 
         // Created date
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -509,8 +512,8 @@ $(document).ready(function () {
 
         $('.form-note-input textarea').val("").height(20)
         $('.last-mod').hide()
-        $('main').fadeIn(150)
         $('.more-menu-list').hide()
+        $('main').fadeIn(150)
 
         // history.back()
     }
