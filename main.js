@@ -922,7 +922,7 @@ $(document).ready(function () {
                 if(notesObj[a].pinned == true) { 
                     $('.notes-wrapper > span').eq(0).css('display', 'block')
                     $('#pinned-notes').css('display', 'block')
-                    $('#pinned-notes').append('<div class="note" id="' + a + '"><span class="icon pinned"></span><img class="thumbnail" alt=""/><h2 class="title">' + notesObj[a].title + '</h2><p class="text">' + notesObj[a].note + '</p><div class="info"><span class="date">' + notesObj[a].date + '</span><span class="lbl"><span class="icon"></span>' + notesObj[a].label + '</span><span style="display:none" class="mod-date">' + notesObj[a].mod_date + '</div></div>')
+                    $('#pinned-notes').append('<div class="note" id="' + a + '"><div class="inner-wrapper"><span class="icon pinned"></span><img class="thumbnail" alt=""/><h2 class="title">' + notesObj[a].title + '</h2><p class="text">' + notesObj[a].note + '</p><div class="info"><span class="date">' + notesObj[a].date + '</span><span class="lbl"><span class="icon"></span>' + notesObj[a].label + '</span><span style="display:none" class="mod-date">' + notesObj[a].mod_date + '</div></div></div>')
                 }else {
                     $('#all-notes, .all').css('display', 'block')
                     $('#all-notes').append('<div class="note" id="' + a + '"><span class="icon pinned" style="visibility:hidden"></span><img class="thumbnail" alt=""/><h2 class="title">' + notesObj[a].title + '</h2><p class="text">' + notesObj[a].note + '</p><div class="info"><span class="date">' + notesObj[a].date + '</span><span class="lbl"><span class="icon"></span>' + notesObj[a].label + '</span><span style="display:none" class="mod-date">' + notesObj[a].mod_date + '</div></div>')
