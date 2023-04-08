@@ -270,8 +270,9 @@ $(document).ready(function () {
                 checkNote()
             }
         }else {
+            
             empty_note = true
-                checkNote()
+            checkNote()
         }
        
         
@@ -284,7 +285,7 @@ $(document).ready(function () {
 
         
         $('.searchbox').text('Search your note...')
-        $('.empty-trash-info').hide()
+        $('.empty-trash-info, .deleted-wrapper').hide()
         add_note.show(30)
 
 

@@ -1160,6 +1160,7 @@ button.add-label .plus-icon{
 .notes-wrapper, .deleted-wrapper{
     width: calc(100vw - 44px);
     height: calc(100vh - 107px);
+    max-width: 330px;
     margin: 60px auto 35px;
     overflow: auto;
     padding-bottom: 22px;
