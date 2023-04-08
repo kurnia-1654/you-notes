@@ -358,14 +358,17 @@ $(document).ready(function () {
         history.pushState('setting', null, '')
 
         popStateCloseOverlay()
+
+        $('.setting-page .back-btn').click(function () {
+            $('.setting-page').css({
+                bottom: "-100vh",
+    
+            }).hide(200)
+            popStateCloseOverlay()
+        })
+    
     })
 
-    $('.setting-page .back-btn').click(function () {
-        $('.setting-page').css({
-            bottom: "-100vh",
-
-        }).hide(200)
-    })
 
 
 
@@ -559,14 +562,17 @@ $(document).ready(function () {
             top: "0",
         })
         popStateCloseOverlay()
+
+        $('.label-page .back-btn').click(function () {
+            history.replaceState('menu', '')
+            $('.label-page').css({
+                top: "100vh"
+            }).hide(150)
+            popStateCloseOverlay()
+        })
+
     })
-    $('.label-page .back-btn').click(function () {
-        history.replaceState('menu', '')
-        $('.label-page').css({
-            top: "100vh"
-        }).hide(150)
-        popStateCloseOverlay()
-    })
+    
 
 
 
@@ -1256,12 +1262,20 @@ $(document).ready(function () {
     }
 
 
-    
 
     
+    $('.reminders, .sync, .user-login, .left-menu li, .duplicate').click(function(){
+        alert("The feature curently not available!")
+    }) 
+
+    
+
+    if(navigator.share) alert("true")
     
 
     
 
 
 })
+
+
