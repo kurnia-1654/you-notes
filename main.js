@@ -266,10 +266,10 @@ $(document).ready(function () {
                 checkNote()
 
             } else {
+                empty_note = true
                 checkNote()
             }
         }
-
        
         
         if(localStorage.getItem('notes') != null ){
@@ -279,11 +279,10 @@ $(document).ready(function () {
         trash_view = false
         note_view = true
 
+        
         $('.searchbox').text('Search your note...')
         $('.empty-trash-info').hide()
         add_note.show(30)
-
-
 
 
 
@@ -1085,7 +1084,7 @@ $(document).ready(function () {
                 
                 window.onpopstate = function () {
                     $('.back-btn').unbind('click')
-                    alert(JSON.stringify(makeNewNoteObj()))
+                    // alert(JSON.stringify(makeNewNoteObj()))
                     saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
                 } 
                 
@@ -1098,7 +1097,7 @@ $(document).ready(function () {
         
                 $('.back-btn').click(()=> {
                     $('.back-btn').unbind('click')
-                    alert(JSON.stringify(makeNewNoteObj()))
+                    // alert(JSON.stringify(makeNewNoteObj()))
                     saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
                 })
             }
@@ -1127,7 +1126,7 @@ $(document).ready(function () {
     
     
     function saveEditedNote(editedNote, oldNote, obj, id) { // will be called in editNote()
-        alert(id)
+        // alert(id)
 
         console.log(editedNote);
         console.log(oldNote);
@@ -1189,7 +1188,7 @@ $(document).ready(function () {
         // console.log('label' + $('li.labels').eq(1).attr('value') );
         if ($('li.labels').eq(1).length > 0) {
             label = $('li.labels').eq(1).attr('value')
-            alert(label)
+            // alert(label)
         }
 
         
