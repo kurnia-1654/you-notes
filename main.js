@@ -490,6 +490,7 @@ $(document).ready(function () {
         back_btn.click(()=> {
             closeAddNote()
             history.back()
+            back_btn.unbind('click')
         })
 
         popStateCloseOverlay()
@@ -1096,9 +1097,9 @@ $(document).ready(function () {
             if(history.state == 'edit-note') {
                 
                 window.onpopstate = function () {
-                    $('.back-btn').unbind('click')
                     // alert(JSON.stringify(makeNewNoteObj()))
                     saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
+                    $('.back-btn').unbind('click')
                 } 
                 
                 // function save(e){
@@ -1109,9 +1110,10 @@ $(document).ready(function () {
                
         
                 $('.back-btn').click(()=> {
-                    $('.back-btn').unbind('click')
-                    // alert(JSON.stringify(makeNewNoteObj()))
+                    alert(JSON.stringify(makeNewNoteObj()))
+                    
                     saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
+                    $('.back-btn').unbind('click')
                 })
             }
         })
@@ -1270,7 +1272,7 @@ $(document).ready(function () {
 
     
 
-    if(navigator.share) alert("true")
+    if(navigator.share) alert("true"); else alert("false")
     
 
     
