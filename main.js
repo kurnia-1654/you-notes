@@ -271,7 +271,7 @@ $(document).ready(function () {
             }
         }else {
             empty_note = true
-            checkNote()
+                checkNote()
         }
        
         
@@ -552,14 +552,14 @@ $(document).ready(function () {
         history.pushState('label-page', '')
         // closeMenu()
         $('.label-page').show(1).css({
-            bottom: "0"
+            top: "0",
         })
         popStateCloseOverlay()
     })
     $('.label-page .back-btn').click(function () {
         history.replaceState('menu', '')
         $('.label-page').css({
-            bottom: "-100vh"
+            top: "100vh"
         }).hide(150)
         popStateCloseOverlay()
     })
@@ -850,7 +850,7 @@ $(document).ready(function () {
 
             window.onpopstate = function () {
                 $('.label-page').css({
-                    bottom: "-100vh"
+                    top: "100vh"
                 }).hide(150)
                 history.replaceState('menu', '')
                 popStateCloseOverlay()

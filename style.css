@@ -930,7 +930,7 @@ span.save-info {
     height: 100vh;
     background: var(--main-bg);
     position: absolute;
-    bottom: -100vh;
+    top: 100vh;
     left: 0;
     display: none;
     z-index: 6;
