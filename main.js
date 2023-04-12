@@ -581,14 +581,13 @@ $(document).ready(function () {
 
     var label = []
 
+
     if (localStorage.getItem('label') == null) {
         localStorage.setItem('label', [])
-    } else {
+    } else if (localStorage.getItem('label') != ''){
         label = JSON.parse(localStorage.getItem('label'))
+        
     }
-
-
-
 
 
     for (var a = 0; a < label.length; a++) {
@@ -803,12 +802,27 @@ $(document).ready(function () {
                 title: $('.note-title').val(),
                 text: $('.note-body').val()
             })
-        } else {
+        }else if (navigator.clipboard){
+            alert("clipboard")
             var value = $('.note-title').val() + "\n\n" + $('.note-body').val()
             navigator.clipboard.writeText(value).then(() => alert('Copied to clipboard!'))
         }
     })
 
+
+    if (navigator.clipboard) {
+        alert('clipboard')
+    }
+    navigator.share = false
+    if (navigator.share) {
+        alert("share")
+    }else if (navigator.clipboard){
+        alert("clipboard")
+        var value = $('.note-title').val() + "\n\n" + $('.note-body').val()
+        navigator.clipboard.writeText(value).then(() => alert('Copied to clipboard!'))
+    }
+
+    
 
 
 
@@ -1110,7 +1124,7 @@ $(document).ready(function () {
                
         
                 $('.back-btn').click(()=> {
-                    alert(JSON.stringify(makeNewNoteObj()))
+                    // alert(JSON.stringify(makeNewNoteObj()))
                     
                     saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
                     $('.back-btn').unbind('click')
@@ -1267,15 +1281,26 @@ $(document).ready(function () {
 
     
     $('.reminders, .sync, .user-login, .left-menu li, .duplicate').click(function(){
-        alert("The feature curently not available!")
+        // alert("The feature curently not available!")
+        $('.popupInfo').html("This feature curently not available!").show().css({
+            'z-index': '9'
+        }) 
+
+        setTimeout(()=> {
+            $('.popupInfo').hide().css({
+                'z-index': '0'
+            })
+        }, 1000)
+        
     }) 
 
     
 
-    if(navigator.share) alert("true"); else alert("false")
+    // if(navigator.share) alert("true"); else alert("false")
     
 
     
+   
 
 
 })
