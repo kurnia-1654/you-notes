@@ -819,23 +819,23 @@ $(document).ready(function () {
     //             text: $('.note-body').val()
     //         })
     //     }else if (navigator.clipboard){
-    //         // alert("clipboard")
+    //         // ////alert("clipboard")
     //         var value = $('.note-title').val() + "\n\n" + $('.note-body').val()
-    //         navigator.clipboard.writeText(value).then(() => alert('Copied to clipboard!'))
+    //         navigator.clipboard.writeText(value).then(() => ////alert('Copied to clipboard!'))
     //     }
     // })
 
 
     // if (navigator.clipboard) {
-    //     // alert('clipboard')
+    //     // ////alert('clipboard')
     // }
     // navigator.share = false
     // if (navigator.share) {
-    //     // alert("share")
+    //     // ////alert("share")
     // }else if (navigator.clipboard){
-    //     // alert("clipboard")
+    //     // ////alert("clipboard")
     //     var value = $('.note-title').val() + "\n\n" + $('.note-body').val()
-    //     navigator.clipboard.writeText(value).then(() => alert('Copied to clipboard!'))
+    //     navigator.clipboard.writeText(value).then(() => ////alert('Copied to clipboard!'))
     // }
 
     
@@ -851,7 +851,7 @@ $(document).ready(function () {
 
 
     function popStateCloseOverlay() {
-        // alert(history.state)
+        // //alert(history.state)
         if (history.state == 'setting') {
             window.onpopstate = function () {
                 $('.setting-page').css({
@@ -974,7 +974,14 @@ $(document).ready(function () {
 
             }
 
+        }else{
+            $('.notes-wrapper > span').eq(0).css('display', 'none')
+            $('#all-notes, .all').css('display', 'none')
+            $('#all-notes, #pinned-notes').children().remove()
+            empty_note = true
+            checkNote()
         }
+
         // console.log(typeof(notes));
         editNote()
         
@@ -1127,8 +1134,8 @@ $(document).ready(function () {
             if(history.state == 'edit-note') {
                 
                 window.onpopstate = function () {
-                    // alert(JSON.stringify(makeNewNoteObj()))
-                    alert('popstate')
+                    // //alert(JSON.stringify(makeNewNoteObj()))
+                    //alert('popstate')
                     saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
                     $('.back-btn').unbind('click')
                 } 
@@ -1141,8 +1148,8 @@ $(document).ready(function () {
                
         
                 $('.back-btn').click(()=> {
-                    // alert(JSON.stringify(makeNewNoteObj()))
-                 
+                    // //alert(JSON.stringify(makeNewNoteObj()))
+                    window.onpopstate = function () {}
                         saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
 
                     $('.back-btn').unbind('click')
@@ -1173,31 +1180,33 @@ $(document).ready(function () {
     
     
     function saveEditedNote(editedNote, oldNote, obj, id) { // will be called in editNote()
-        // alert(id)
-        alert('save edited')
-        alert("title" + editedNote.title + ", note: " + editedNote.note)
-        // alert((editedNote.title == '') && (editedNote.note  == ''))
+        // //alert(id)
+        //alert('save edited')
+        //alert("title" + editedNote.title + ", note: " + editedNote.note)
+        // //alert((editedNote.title == '') && (editedNote.note  == ''))
         console.log(editedNote);
         console.log(oldNote);
     
         if ((editedNote.title == '') && (editedNote.note  == '')) {
             alert('sliced')
             obj.splice(id, 1)
+            if (obj.length == 0) localStorage.setItem('notes', '') ; else localStorage.setItem('notes', JSON.stringify(obj)) 
+            alert(JSON.stringify(obj))
             $('.popupInfo').html("Empty Note deleted!").show().css({
                 'z-index': '9'
             }) 
-    
+            
             setTimeout(()=> {
                 $('.popupInfo').hide().css({
                     'z-index': '0'
                 })
             }, 1000)
 
-
+            loadNote()
             
 
-            if (obj.length == 0) localStorage.setItem('notes', '') ; else localStorage.setItem('notes', JSON.stringify(obj)) 
-            loadNote()
+            
+            
             
         }
         
@@ -1205,9 +1214,9 @@ $(document).ready(function () {
         // console.log(oldNote);
         // console.log(JSON.stringify(editedNote[id]));
     
-        // alert('{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}' === '{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}')
+        // //alert('{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}' === '{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}')
         
-        // alert(oldNote === editNote[id])
+        // //alert(oldNote === editNote[id])
         if((JSON.stringify(editedNote) !== oldNote) && (editedNote.title != '') && (editedNote.note  != '')) {
             
             
@@ -1250,7 +1259,7 @@ $(document).ready(function () {
 
 
     function saveToLocal() {
-        alert('saved')
+        ////alert('saved')
         var title = $('.note-title').val()
 
         var note = $('.note-body').val()
@@ -1263,7 +1272,7 @@ $(document).ready(function () {
         // console.log('label' + $('li.labels').eq(1).attr('value') );
         if ($('li.labels').eq(1).length > 0) {
             label = $('li.labels').eq(1).attr('value')
-            // alert(label)
+            // ////alert(label)
         }
 
         
@@ -1328,7 +1337,7 @@ $(document).ready(function () {
 
     
     $('.reminders, .sync, .user-login, .left-menu li, .duplicate').click(function(){
-        // alert("The feature curently not available!")
+        // ////alert("The feature curently not available!")
         $('.popupInfo').html("This feature curently not available!").show().css({
             'z-index': '9'
         }) 
@@ -1343,7 +1352,7 @@ $(document).ready(function () {
 
     
 
-    // if(navigator.share) alert("true"); else alert("false")
+    // if(navigator.share) ////alert("true"); else ////alert("false")
     
 
     
