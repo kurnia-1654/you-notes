@@ -253,13 +253,21 @@ $(document).ready(function () {
         closeMenu()
         
         if (localStorage.getItem('notes') != null){
-            var arr = JSON.parse(localStorage.getItem('notes'))
             var n
-            if (arr == null){
+            if (localStorage.getItem('notes') == '') {
                 n = 0
-            }else {
-                n = arr.length
+            } else {
+                var obj = JSON.parse(localStorage.getItem('notes'))
+                n = Object.keys(obj).length
             }
+
+            // var arr = JSON.parse(localStorage.getItem('notes'))
+            // var n
+            // if (arr == null){
+            //     n = 0
+            // }else {
+            //     n = arr.length
+            // }
             
             if (n > 0) {
                 empty_note = false
@@ -754,17 +762,24 @@ $(document).ready(function () {
 
 
     function deleteNote(note, obj, id){
+        
         $('li.delete').click(function () {
             
             // To delete note from notes index
-            var newNoteArr = [] 
+            var newNoteArr = []
             let n = Object.keys(obj).length
             
-            for (let i = n - 1; i >= 0; i--){
+            for (let i = 0; i < n; i++){
                 if(i != id) newNoteArr.push(obj[i]) // for filtering oldnote that deleted
             }
-            
-            localStorage.setItem('notes', JSON.stringify(newNoteArr))
+
+            if (newNoteArr.length == 0) {
+                localStorage.removeItem('notes')
+            }else {
+                localStorage.setItem('notes', JSON.stringify(newNoteArr))
+            }
+
+            // console.log("newnote" + newNoteArr.length);            
             loadNote()
 
             // End
@@ -792,35 +807,36 @@ $(document).ready(function () {
 
             showTrash()
             closeEditNote()
+            
         })
     }
 
     // Share
-    $('li.share').click(function () {
-        if (navigator.share) {
-            navigator.share({
-                title: $('.note-title').val(),
-                text: $('.note-body').val()
-            })
-        }else if (navigator.clipboard){
-            alert("clipboard")
-            var value = $('.note-title').val() + "\n\n" + $('.note-body').val()
-            navigator.clipboard.writeText(value).then(() => alert('Copied to clipboard!'))
-        }
-    })
+    // $('li.share').click(function () {
+    //     if (navigator.share) {
+    //         navigator.share({
+    //             title: $('.note-title').val(),
+    //             text: $('.note-body').val()
+    //         })
+    //     }else if (navigator.clipboard){
+    //         // alert("clipboard")
+    //         var value = $('.note-title').val() + "\n\n" + $('.note-body').val()
+    //         navigator.clipboard.writeText(value).then(() => alert('Copied to clipboard!'))
+    //     }
+    // })
 
 
-    if (navigator.clipboard) {
-        alert('clipboard')
-    }
-    navigator.share = false
-    if (navigator.share) {
-        alert("share")
-    }else if (navigator.clipboard){
-        alert("clipboard")
-        var value = $('.note-title').val() + "\n\n" + $('.note-body').val()
-        navigator.clipboard.writeText(value).then(() => alert('Copied to clipboard!'))
-    }
+    // if (navigator.clipboard) {
+    //     // alert('clipboard')
+    // }
+    // navigator.share = false
+    // if (navigator.share) {
+    //     // alert("share")
+    // }else if (navigator.clipboard){
+    //     // alert("clipboard")
+    //     var value = $('.note-title').val() + "\n\n" + $('.note-body').val()
+    //     navigator.clipboard.writeText(value).then(() => alert('Copied to clipboard!'))
+    // }
 
     
 
@@ -1112,6 +1128,7 @@ $(document).ready(function () {
                 
                 window.onpopstate = function () {
                     // alert(JSON.stringify(makeNewNoteObj()))
+                    alert('popstate')
                     saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
                     $('.back-btn').unbind('click')
                 } 
@@ -1125,8 +1142,9 @@ $(document).ready(function () {
         
                 $('.back-btn').click(()=> {
                     // alert(JSON.stringify(makeNewNoteObj()))
-                    
-                    saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
+                 
+                        saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
+
                     $('.back-btn').unbind('click')
                 })
             }
@@ -1149,18 +1167,39 @@ $(document).ready(function () {
         // $('.form-note-input textarea').val("").height(20)
         // $('.last-mod').hide()
         // $('.more-menu-list').hide()
-    
+        $('.back-btn').unbind('click')
         history.back()
     }
     
     
     function saveEditedNote(editedNote, oldNote, obj, id) { // will be called in editNote()
         // alert(id)
-
+        alert('save edited')
+        alert("title" + editedNote.title + ", note: " + editedNote.note)
+        // alert((editedNote.title == '') && (editedNote.note  == ''))
         console.log(editedNote);
         console.log(oldNote);
     
-       
+        if ((editedNote.title == '') && (editedNote.note  == '')) {
+            alert('sliced')
+            obj.splice(id, 1)
+            $('.popupInfo').html("Empty Note deleted!").show().css({
+                'z-index': '9'
+            }) 
+    
+            setTimeout(()=> {
+                $('.popupInfo').hide().css({
+                    'z-index': '0'
+                })
+            }, 1000)
+
+
+            
+
+            if (obj.length == 0) localStorage.setItem('notes', '') ; else localStorage.setItem('notes', JSON.stringify(obj)) 
+            loadNote()
+            
+        }
         
         // console.log(JSON.stringify(editedNote[id]) === oldNote)
         // console.log(oldNote);
@@ -1169,25 +1208,32 @@ $(document).ready(function () {
         // alert('{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}' === '{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}')
         
         // alert(oldNote === editNote[id])
-        if(JSON.stringify(editedNote) !== oldNote) {
+        if((JSON.stringify(editedNote) !== oldNote) && (editedNote.title != '') && (editedNote.note  != '')) {
             
-            var newNoteArr = [] 
-            let n = Object.keys(obj).length
             
-            console.log(n);
-    
-            
-            for (let i = n - 1; i >= 0; i--){
-                if(i != id) newNoteArr.push(obj[i]) // for filtering oldnote that has edited
+                var newNoteArr = [] 
+                let n = Object.keys(obj).length
                 
-            }
+                console.log(n);
+        
+                
+                for (let i = n - 1; i >= 0; i--){
+                    if(i != id) newNoteArr.push(obj[i]) // for filtering oldnote that has edited
+                    
+                }
+                
+                console.log("editedNote[id]) : " + JSON.stringify(editedNote));
+                newNoteArr.push(editedNote) // after all notes filtered, then push edited note to the last index
+        
+        
+                localStorage.setItem('notes', JSON.stringify(newNoteArr))
+                loadNote()
             
-            console.log("editedNote[id]) : " + JSON.stringify(editedNote));
-            newNoteArr.push(editedNote) // after all notes filtered, then push edited note to the last index
-    
-    
-            localStorage.setItem('notes', JSON.stringify(newNoteArr))
-            loadNote()
+
+            
+            
+
+            
             
         } 
         closeEditNote()
@@ -1204,7 +1250,7 @@ $(document).ready(function () {
 
 
     function saveToLocal() {
-        // alert('executed')
+        alert('saved')
         var title = $('.note-title').val()
 
         var note = $('.note-body').val()
@@ -1222,6 +1268,7 @@ $(document).ready(function () {
 
         
         if (title || note !== '') {
+            console.log('saved');
             if (localStorage.getItem('notes') == null) {
                 localStorage.setItem('notes', '')
             }

@@ -124,11 +124,13 @@
                     </div>
 
                     
-                    <ul class="bottom-menu-list">
-                            <li class="sync"><span class="icon"></span>Account and Sync</li>
-                            <li class="settings"><span class="icon"></span>Settings</li>
+                    <div class="bottom-menu-list">
+                            <ul>
+                                <li class="sync"><span class="icon"></span>Account and Sync</li>
+                                <li class="settings"><span class="icon"></span>Settings</li>
+                            </ul>
                             <span>Version 1.2</span>
-                    </ul>
+                    </div>
                     
                     
             </div>
@@ -152,7 +154,7 @@
 
             <div class="setting-page">
                 <div class="page-nav">
-                    <button class="icon back-btn"></button>
+                    <button title="back" class="icon back-btn"></button>
                     <span>Settings</span>
                 </div>
                 <span class="group-title">Theme</span>
@@ -162,7 +164,7 @@
                 </div> -->
                 <div class="setting-item">
                     <span>Dark Mode</span>
-                    <button class="dark-mode toggle-btn" ><span></span></button>
+                    <button title="Swicth Mode" class="dark-mode toggle-btn" ><span></span></button>
                 </div>
             </div>
 
@@ -223,7 +225,7 @@
     <!-- Add label Page-->
     <div class="label-page">
         <div class="page-nav">
-            <button class="icon back-btn"></button>
+            <button title="Back" class="icon back-btn"></button>
             <span>Labels</span>
         </div>
         <ul class="label-list">
@@ -249,7 +251,7 @@
     <div class="set-label-overlay"></div>
     <div class="set-label">
         <span class="title">Select label</span>
-        <select class="label-selection" >
+        <select title="Select Label" class="label-selection" >
             <option selected disabled>Select Label</option>
         </select>
         <button class="act-set-label">Set Label</button>

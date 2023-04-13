@@ -2,9 +2,9 @@
     margin: 0;
     box-sizing: border-box;
     padding: 0;
-    user-select: none;
-    -webkit-user-select:none;
     -ms-user-select:none;
+    -webkit-user-select:none;
+    user-select: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -moz-tap-highlight-color: rgba(0, 0, 0, 0);
 
@@ -101,6 +101,7 @@ main{
     align-items: center;
     padding: 10px 16px;
     margin: auto;
+    width: -moz-fit-content;
     width: fit-content;
     min-width: 316px;
 
@@ -176,7 +177,6 @@ main{
 .empty-notes {
     position: absolute;
     width: calc(100% - 44px);
-    height: fit-content;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -187,7 +187,8 @@ main{
 
 .empty-notes .text{
     width: 100%;
-    height: fit-content;
+    /* height: -moz-fit-content;
+    height: fit-content; */
     color: var(--primary-text-color);
 }
 
@@ -265,7 +266,7 @@ main{
 .setting-page .page-nav span:last-child, .label-page .page-nav span{
     all: unset;
     width: 100%;
-    height: fit-content;
+    /* height: fit-content; */
     
     font-style: normal;
     font-weight: 500;
@@ -295,6 +296,7 @@ main{
     position: absolute;
     left: 50%;
     top: 50%;
+    width: -moz-fit-content;
     width: fit-content;
     transform: translate(-50%, -50%);
     font-style: normal;
@@ -343,7 +345,7 @@ main{
 
 .menu .logo-text {
     width: 100%;
-    height: fit-content;
+    /* height: fit-content; */
     padding: 36px 30px;
     
     font-style: normal;
@@ -515,7 +517,7 @@ main{
     gap: 9px;
 
     
-    height: fit-content;
+    /* height: fit-content; */
     width: 100%;
     padding: 18px 40px;
 
@@ -595,7 +597,7 @@ main{
     padding: 22px;
     top: 0;
     width: 100vw;
-    height: fit-content;
+    /* height: fit-content; */
     /* transition: all ease-out 0.01s; */
     
 }
@@ -803,7 +805,7 @@ span.save-info {
 
 .bottom-menu {
     width: 100vw;
-    height: fit-content;
+    /* height: fit-content; */
     padding: 22px;
     display: inline-flex;
     justify-content: space-between;
@@ -867,6 +869,7 @@ span.save-info {
 
 .more-menu-list {
     display: none;
+    width: -moz-fit-content;
     width: fit-content;
     position: absolute;
     bottom: 70px;
@@ -939,7 +942,7 @@ span.save-info {
 
 .label-list {
     width: 100%;
-    height: fit-content;
+    
     padding: 30px 22px;
 }
 
@@ -1015,9 +1018,10 @@ button.add-label .plus-icon{
 
 /* add label overlay */
 .add-new-label, .set-label, .popupInfo{
+    width: -moz-fit-content;
     width:fit-content;
     max-width: 300px;
-    height: fit-content;
+    
     padding: 28px 38px;
     text-align: center;
     background: var(--main-bg);
