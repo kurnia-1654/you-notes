@@ -160,6 +160,7 @@ $(document).ready(function () {
         }
 
         back_btn.click(function () {
+            window.onpopstate = function () {}
             $('.search').fadeOut(150, showTrash())
             history.back()
         })
@@ -176,6 +177,7 @@ $(document).ready(function () {
         }
 
         back_btn.click(function () {
+            window.onpopstate = function () {}
             $('.search').fadeOut(150, showNote())
             history.back()
         })
@@ -496,6 +498,7 @@ $(document).ready(function () {
         $('.date-created span').html(createDate).show(10)
 
         back_btn.click(()=> {
+            window.onpopstate = function () {}
             closeAddNote()
             history.back()
             back_btn.unbind('click')
