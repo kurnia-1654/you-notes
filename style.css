@@ -852,7 +852,7 @@ span.save-info {
     cursor: pointer;
 }
 .light-theme .more-menu{
-    filter: invert();
+    filter: invert(1);
 }
 
 .date-created{
@@ -1320,7 +1320,7 @@ button.add-label .plus-icon{
 /* Popup */
 
 .popupInfo {
-    top: 80%;
+    top: 75%;
     left: 50%;
     width: calc(100% - 44px);
     border-radius: 8px;

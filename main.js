@@ -1,27 +1,19 @@
 $(document).ready(function () {
-
-    // history.pushState('', '')
-
     // Setting theme
-
     // Local Storage Save Preference
     // Default theme is Light -- dark mode btn is Off
     if (localStorage.getItem('theme') == null) {
         localStorage.setItem('theme', 'light')
     }
 
-
     var getTheme = localStorage.getItem('theme')
 
     // If user switch on the dark mode button 
     // Set item local Storage 'theme' => dark
 
-
     changeTheme() // change the theme onload 
 
-
     $('.dark-mode').click(function () {
-
         if (getTheme == 'light') {
             // On click set to dark mode
             localStorage.setItem('theme', 'dark')
@@ -38,23 +30,11 @@ $(document).ready(function () {
     })
 
 
-
-
-
-
-
-
     function changeTheme() {
         if (getTheme == 'dark') $('html').removeClass('light-theme'), InvertColor(), $('.dark-mode').addClass('on'); else $('html').addClass('light-theme'), InvertColor(), $('.dark-mode').removeClass('on')
     }
 
-
-
-
-
-
-
-    // Setting theme based on color scheme preference
+    // Setting theme based on color scheme preference (Not Work On webView Android)
     // will be enable if user switch on the button 
     // setTheme()
     function setTheme() {
@@ -66,8 +46,6 @@ $(document).ready(function () {
             }
         }
     }
-
-
 
 
     // $('.system-theme').click(function(){
@@ -105,14 +83,6 @@ $(document).ready(function () {
     }
 
 
-
-    // function no_notes(no_notes) {   
-    //     if (no_notes){
-    //         $('.no-notes').hide()
-    //     }
-    // }
-
-
     var add_note = $('.add-note-btn')
     var search_box = $('.searchbox')
     var back_btn = $('.back-btn')
@@ -121,19 +91,14 @@ $(document).ready(function () {
     var addNewLabelOverlay = $('.add-new-label-overlay')
 
     var empty_note = true;
-    var empty_trash = true;
-    var empty_note_show = true;
-    var empty_trash_show = false;
     var trash_view = false;
     var note_view = true;
 
-
-
-
     showNote()
 
-
-
+   
+    //  Show Search Functionality
+   
     search_box.on('click', function () {
         if (trash_view) {
             history.pushState('search', '')
@@ -144,8 +109,6 @@ $(document).ready(function () {
         }
     })
 
-
-
     function searchTrash() {
         $('.search').fadeIn(150)
         $('#search-input').focus()
@@ -153,7 +116,6 @@ $(document).ready(function () {
         $('#search-input').attr('placeholder', 'Search your trash...')
         $('.body-text').text('Your notes in trash will be displayed here')
 
-        // popStateCloseOverlay(showTrash)
         window.onpopstate = function () {
             $('.search').fadeOut(150)
             showTrash()
@@ -169,7 +131,6 @@ $(document).ready(function () {
     function searchNote() {
         $('.search').fadeIn(150)
         $('#search-input').focus()
-        // popStateCloseOverlay(showNote)
 
         window.onpopstate = function () {
             $('.search').fadeOut(150)
@@ -183,14 +144,7 @@ $(document).ready(function () {
         })
     }
 
-
-
-
-
-
-
-
-
+    // end 
 
 
     function showTrash() {
@@ -222,10 +176,6 @@ $(document).ready(function () {
 
         }
 
-
-
-
-
         trash_view = true
         note_view = false
         history.go(-2)
@@ -242,12 +192,9 @@ $(document).ready(function () {
         // Checking wether notes is empty
         if (empty_note) {
             $('.empty-notes').show()
-
         } else {
-
             $('.notes-wrapper').show()
             $('.empty-notes').hide()
-            // showAllNote()   
         }
     }
 
@@ -262,14 +209,6 @@ $(document).ready(function () {
                 var obj = JSON.parse(localStorage.getItem('notes'))
                 n = Object.keys(obj).length
             }
-
-            // var arr = JSON.parse(localStorage.getItem('notes'))
-            // var n
-            // if (arr == null){
-            //     n = 0
-            // }else {
-            //     n = arr.length
-            // }
 
             if (n > 0) {
                 empty_note = false
@@ -293,13 +232,9 @@ $(document).ready(function () {
         trash_view = false
         note_view = true
 
-
         $('.searchbox').text('Search your note...')
         $('.empty-trash-info, .deleted-wrapper').hide()
         add_note.show(30)
-
-
-
     }
 
 
@@ -307,26 +242,12 @@ $(document).ready(function () {
     $('.all-note').on('click', showNote)
     $('.trash').on('click', showTrash)
 
-
-
-    add_note.click(function () {
-        // no_notes(true)
-
-    })
-
-
-
     overlay.click(function () {
         $('.overlay').fadeOut(150)
         $('.menu').css({
             left: "-100vw",
         }).hide(150)
     })
-
-
-
-
-
 
 
     // Open Menu
@@ -341,26 +262,22 @@ $(document).ready(function () {
 
 
         overlay.show()
-        // checkState()
         popStateCloseOverlay()
     })
+
+    // Close menu
 
     function closeMenu() {
         $('.menu').css({
             left: "-100vw",
         }).hide(150)
         $('.overlay').fadeOut(150)
-        // history.pushState('', '')
         popStateCloseOverlay()
     }
 
 
 
-
-
-
     $('.settings').click(function () {
-        // history.back()
         $('.setting-page').show(1).css({
             bottom: "0px",
         })
@@ -378,26 +295,6 @@ $(document).ready(function () {
         })
 
     })
-
-
-
-
-
-
-    // Toggle setting on-off 
-
-    // checkToggle()
-
-
-
-
-
-
-
-    $(document).on('swipe', 'a', function (event) {
-        console.log(event)
-    })
-
 
 
     // auto resize textarea
@@ -431,15 +328,11 @@ $(document).ready(function () {
 
 
     $('textarea').on('input', function () {
-        // Auto save button
-
+        // Auto save - just a design and animation - not functionalityyyy
+        // Note will be auto saved on back btn clicked or onpopsate event fired
         var noteBodyText = $(this).val()
         var lastChar = noteBodyText[noteBodyText.length - 1]
-
         if (lastChar == ' ') $('.save-info').html('<span class="ic-saving"></span>Saving...'), $('.save-info').fadeIn(150)
-
-
-
 
         setTimeout(() => {
             $('.save-info').html('<span class="ic-saved"></span>Saved')
@@ -448,18 +341,7 @@ $(document).ready(function () {
         setTimeout(() => {
             $('.save-info').fadeOut(150)
         }, 2000);
-
-
     })
-
-
-
-
-
-
-
-
-
 
 
     $('.form-note-input').scroll(function () {
@@ -472,9 +354,6 @@ $(document).ready(function () {
             $('.add-note .page-nav').removeClass('sticky')
         }
     })
-
-
-
 
 
     $('.add-note-btn').click(function () {
@@ -508,39 +387,24 @@ $(document).ready(function () {
     })
 
 
-
-
-
-
-
-
-
     function closeAddNote() {
-        // console.log('id: ' + id);
         $('.add-note').css({
             right: '-100vw',
         }).hide(150)
 
-
         saveToLocal();
         $('.del-lbl').parent().remove()
-
 
         $('.form-note-input textarea').val("").height(20)
         $('.last-mod').hide()
         $('.more-menu-list').hide()
         $('main').fadeIn(150)
-
-        // history.back()
     }
-
-
 
 
     $('.pin').click(function () {
         $(this).toggleClass('pinned')
     })
-
 
     // Open and close more menu list
     if (history.state != 'more-menu-show') {
@@ -553,19 +417,15 @@ $(document).ready(function () {
         history.replaceState('add-note', '')
     }
 
-    $('.add-note').click(function (e) { // using parent selecter of the button to be work
-        if ((e.target).className !== "more-menu") {
-            $('.more-menu-list').hide()
-
+    $('.add-note').click(function (e) { // using parent selecter of the button to make it works
+        if ((e.target).className !== "more-menu") { 
+            //if clicked target doesnt have class more-menu, call the function
             popStateCloseOverlay()
         }
     })
 
 
-
-
-
-    // Open close label page
+    // Open & close label page
 
     $('.labels').click(function () {
         history.pushState('label-page', '')
@@ -586,30 +446,23 @@ $(document).ready(function () {
     })
 
 
-
-
     // Add new label
-
     var label = []
-
 
     if (localStorage.getItem('label') == null) {
         localStorage.setItem('label', [])
     } else if (localStorage.getItem('label') != '') {
         label = JSON.parse(localStorage.getItem('label'))
-
     }
-
 
     for (var a = 0; a < label.length; a++) {
         loadLabel()
     }
 
+    
     function loadLabel() {
         $('.label-list').append('<li class="label"><span class="icon edit"></span><span class="name">' + label[a] + '</span></li>')
     }
-
-
 
 
 
@@ -634,16 +487,12 @@ $(document).ready(function () {
         $('.add-new-label').css({ display: 'block' })
         $('.add-new-label input').focus()
 
-
-
         $('.act-add').click(() => {
             history.replaceState('label-page', '')
-
             popStateCloseOverlay()
             if (labelInput.val() !== '') {
                 label.push(labelInput.val())
                 localStorage.setItem('label', JSON.stringify(label)) //Push new label as string array to local storage
-
 
                 if (history.state = 'label-page') loadLabel();
 
@@ -655,15 +504,11 @@ $(document).ready(function () {
                 labelInput.val('')
                 addNewLabelOverlay.hide()
             }
-
         })
-
-
     })
 
 
     function reloadLabelSelection(val) {
-
         $('.label-selection option').eq(0).siblings().remove()
         for (let a = 0; a < label.length; a++) {
             $('.label-selection').append('<option value = "' + label[a] + '">' + label[a] + '</option>')
@@ -673,12 +518,9 @@ $(document).ready(function () {
 
 
     // Asign label to note -- li.add-label
-
     function showSetLabel() {
-        // history.pushState('set-label', '')
         history.replaceState('set-label', '')
         popStateCloseOverlay()
-
         $('.set-label').fadeIn(150)
         setlabelOverlay.show(1).css({
             'z-index': '7'
@@ -690,32 +532,22 @@ $(document).ready(function () {
                 'z-index': '2'
             })
         })
-
         for (let a = 0; a < label.length; a++) {
-
             if (label[a] == labelChosed) {
                 $('.label-selection').append('<option disabled value = "' + label[a] + '">' + label[a] + '</option>')
             } else {
                 $('.label-selection').append('<option value = "' + label[a] + '">' + label[a] + '</option>')
             }
         }
-
-
     }
-
 
 
     // Var to store label has selected option and asign disabled property 
     var labelChosed = ''
-
-
-
     $('li.add-label').click(() => {
         showSetLabel()
         console.log(labelChosed);
-
         $('.more-menu-list').hide()
-
         $('.act-set-label').click(() => {
             var selectedLabel = $('.label-selection').find('option:selected')
             if (selectedLabel.val() != $('.label-selection option:eq(0)').val()) {
@@ -732,9 +564,6 @@ $(document).ready(function () {
                 removeLabel()
                 history.replaceState('add-note', '')
             }
-
-
-
         })
 
         setlabelOverlay.click(function () {
@@ -762,12 +591,8 @@ $(document).ready(function () {
         })
     }
 
-
-
     function deleteNote(note, obj, id) {
-
         $('li.delete').click(function () {
-
             // To delete note from notes index
             var newNoteArr = []
             let n = Object.keys(obj).length
@@ -782,7 +607,6 @@ $(document).ready(function () {
                 localStorage.setItem('notes', JSON.stringify(newNoteArr))
             }
 
-            // console.log("newnote" + newNoteArr.length);            
             loadNote()
 
             // End
@@ -807,7 +631,6 @@ $(document).ready(function () {
                 localStorage.setItem('deleted', JSON.stringify(newDeleted))
             }
 
-
             $('.popupInfo').html("Moved to trash! <span class='showTrash'>View Trash</span>").show().css({
                 'z-index': '9'
             })
@@ -828,14 +651,12 @@ $(document).ready(function () {
                 showTrash()
             })
 
-
-
             $('li.delete').unbind('click')
         })
 
     }
 
-    // Share
+    // Share -- in progress --Not working on android WebView
     // $('li.share').click(function () {
     //     if (navigator.share) {
     //         navigator.share({
@@ -863,16 +684,10 @@ $(document).ready(function () {
     // }
 
 
-
-
-
-
-
+    // end
 
     // popopState back button close overlay
     // Window.onpopstate
-
-
 
     function popStateCloseOverlay() {
         // //alert(history.state)
@@ -881,11 +696,9 @@ $(document).ready(function () {
                 $('.setting-page').css({
                     bottom: "-100vh",
                 }).hide(200)
-
                 popStateCloseOverlay()
             }
         } else if (history.state == 'add-note') {
-
             window.onpopstate = function () {
                 closeAddNote()
                 popStateCloseOverlay()
@@ -896,7 +709,6 @@ $(document).ready(function () {
                 popStateCloseOverlay()
             }
         } else if (history.state == 'more-menu-show') {
-
             window.onpopstate = function () {
                 $('.more-menu-list').hide()
                 popStateCloseOverlay()
@@ -908,7 +720,6 @@ $(document).ready(function () {
                 setlabelOverlay.fadeOut(150).css({
                     'z-index': '2'
                 })
-
                 popStateCloseOverlay()
             }
         } else if (history.state == 'label-page') {
@@ -933,41 +744,11 @@ $(document).ready(function () {
             }
         }
     }
-
-    $('.back-button, .overlay').click(function () {
-        // history.back()
-    })
-
     // End of popstate
 
 
 
-
-
-
-
-
-
-
-
-    $.getJSON("notes/notes.json", function (notes) {
-        var n = Object.keys(notes).length
-        // console.log('notes' + notes[1]);
-        // for (let a = 1; a <= n; a++) {
-        //     $('#pinned-notes').append('<div class="note" id="' + a + '"><span class="icon pinned"></span><img class="thumbnail" alt=""/><h2 class="title">' + notes[a].title + '</h2><p class="text">' + notes[a].note + '</p><div class="info"><span class="date">' + notes[a].date + '</span><span class="lbl"><span class="icon"></span>' + notes[a].label + '</span><span style="display:none" class="mod-date">' + notes[a].mod_date + '</div></div>')
-        //     console.log(notes[a].mod_date);
-
-        // }
-
-    })
-
-
-
-
-
     function loadNote() {
-
-
         if (localStorage.getItem('notes') != '') {
 
             var notes = JSON.parse(localStorage.getItem('notes'))
@@ -995,7 +776,6 @@ $(document).ready(function () {
 
                     $('.lbl').eq(b).hide()
                 }
-
             }
 
         } else {
@@ -1006,43 +786,23 @@ $(document).ready(function () {
             checkNote()
         }
 
-        // console.log(typeof(notes));
         editNote()
 
 
-        // Using for loop  to conver arr to object
+        // Using for loop  to conver arr to object -- option 2 for asign()
         // let notesObj2 = {}
         // for (let i = 0; i < notes.length; i++ ){
         //     notesObj2[i] = notes[i]
         // }
 
-        // var note = {"1":{"title":"dadad","date":"Created : April 3, 2023","mod_date":"Edited : April 3, 2023 at 16:57","note":"asdasdas","bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}}
-
-        // console.log(note[1].title);
-        // errro undevined 
-
-        // console.log(notesObj[0][1]);
-        // console.log(JSON.stringify(notesObj[1]));
-
-        // console.log(Object.keys(notesObj));
-
-
-
-    }
-
-
+    } // end loadNote()
 
 
     function editNote() {
         $('.note').click(function () {
             var id = $(this).attr('id')
-
-
             let index = JSON.parse(localStorage.getItem('notes'))[id]
-            // console.log(index);
-
             history.pushState('edit-note', null, id)
-
 
             var title = index.title
             var note = index.note
@@ -1050,16 +810,12 @@ $(document).ready(function () {
             var mod = index.mod_date
             console.log(mod);
             var label = index.label
-            // console.log(label);
-
 
             $('.add-note').show(0).css({
                 right: 0
             })
 
-
             if ($(this).parent().attr('id') == 'pinned-notes') {
-
                 $('.pin').addClass('pinned')
             } else {
                 $('.pin').removeClass('pinned')
@@ -1071,7 +827,6 @@ $(document).ready(function () {
             $('.add-note .note-body').val(note)
             var titleHeight = document.querySelector('.note-title').scrollHeight
             var noteHeight = document.querySelector('.note-body').scrollHeight
-            // console.log(titleHeight, noteHeight);
             $('.add-note .note-title').innerHeight(titleHeight)
             $('.add-note .note-body').innerHeight(noteHeight)
             $('.date-created span').text(date)
@@ -1082,9 +837,6 @@ $(document).ready(function () {
                 $('.note-label').append('<li class="labels" value="' + label + '"><span></span>' + label + '<span class="del-lbl">x</span></li>')
                 removeLabel()
             }
-
-
-
 
             var editedNote
 
@@ -1099,16 +851,7 @@ $(document).ready(function () {
 
                 var label = ''
                 if ($('li.labels').eq(1).length == 0) label = 'null'; else label = $('li.labels').eq(1).attr('value')
-                // if ($('.note-label').length == 0) label = 'null'; else label = $('.note-label .label .name').text()
 
-                // $('.act-set-label').click(() => {
-                //     var selectedLabel = $('.label-selection').find('option:selected')
-                //     if (selectedLabel.val() != $('.label-selection option:eq(0)').val()) {
-                //         label = selectedLabel.val()
-                //         console.log(label);
-                //     }
-                //     // console.log(label);
-                // })
 
                 var editedNoteObj = {
                     [id]: {
@@ -1125,29 +868,8 @@ $(document).ready(function () {
                         "color_theme": "default"
                     }
                 }
-
                 return editedNoteObj[id]
             }
-
-
-            // $('textarea').on('input', function(){
-            //    editedNote = makeNewNoteObj()
-            // })
-
-            // $('.pin').click(function(){
-            //     editedNote = makeNewNoteObj() 
-            //     console.log(editedNote);
-            // }) 
-
-            // $('.act-set-label').click(() => {
-            //     editedNote = makeNewNoteObj() 
-            //     console.log(editedNote);
-            // })
-
-
-
-
-
 
             var obj = JSON.parse(localStorage.getItem('notes'))
             var oldNote = JSON.stringify(obj[id])
@@ -1156,20 +878,12 @@ $(document).ready(function () {
             deleteNote(oldNote, obj, id)
 
             if (history.state == 'edit-note') {
-
                 window.onpopstate = function () {
                     // //alert(JSON.stringify(makeNewNoteObj()))
                     //alert('popstate')
                     saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
                     $('.back-btn').unbind('click')
                 }
-
-                // function save(e){
-
-                //     // console.log(editNote); // not executed
-                //     saveEditedNote(e, oldNote, obj)
-                // }
-
 
                 $('.back-btn').click(() => {
                     // //alert(JSON.stringify(makeNewNoteObj()))
@@ -1180,75 +894,42 @@ $(document).ready(function () {
                 })
             }
         })
-
-
-
-    }
+    }// end of editNote()
 
 
     function closeEditNote() {
-
         $('.add-note').css({
             right: '-100vw',
         }).hide(150)
-
-
         $('main').fadeIn(150)
-
-        // $('.form-note-input textarea').val("").height(20)
-        // $('.last-mod').hide()
-        // $('.more-menu-list').hide()
         $('.back-btn').unbind('click')
         history.back()
     }
 
 
     function saveEditedNote(editedNote, oldNote, obj, id) { // will be called in editNote()
-        // //alert(id)
-        //alert('save edited')
-        //alert("title" + editedNote.title + ", note: " + editedNote.note)
-        // //alert((editedNote.title == '') && (editedNote.note  == ''))
         console.log(editedNote);
         console.log(oldNote);
 
         if ((editedNote.title == '') && (editedNote.note == '')) {
-            // alert('sliced')
             obj.splice(id, 1)
             if (obj.length == 0) localStorage.setItem('notes', ''); else localStorage.setItem('notes', JSON.stringify(obj))
-            // alert(JSON.stringify(obj))
             $('.popupInfo').html("Empty Note deleted!").show().css({
                 'z-index': '9'
             })
-
             setTimeout(() => {
                 $('.popupInfo').fadeOut().css({
                     'z-index': '0'
                 })
             }, 1500)
-
             loadNote()
-
-
-
-
-
         }
 
-        // console.log(JSON.stringify(editedNote[id]) === oldNote)
-        // console.log(oldNote);
-        // console.log(JSON.stringify(editedNote[id]));
-
-        // //alert('{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}' === '{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}')
-
-        // //alert(oldNote === editNote[id])
         if ((JSON.stringify(editedNote) !== oldNote) && (editedNote.title != '') && (editedNote.note != '')) {
-
-
             var newNoteArr = []
             let n = Object.keys(obj).length
 
             console.log(n);
-
 
             for (let i = n - 1; i >= 0; i--) {
                 if (i != id) newNoteArr.push(obj[i]) // for filtering oldnote that has edited
@@ -1258,32 +939,16 @@ $(document).ready(function () {
             console.log("editedNote[id]) : " + JSON.stringify(editedNote));
             newNoteArr.push(editedNote) // after all notes filtered, then push edited note to the last index
 
-
             localStorage.setItem('notes', JSON.stringify(newNoteArr))
             loadNote()
-
-
-
-
-
-
-
         }
         closeEditNote()
-
-
-
     }
 
 
 
-
-
     // Create new note and save to local storage
-
-
     function saveToLocal() {
-        ////alert('saved')
         var title = $('.note-title').val()
 
         var note = $('.note-body').val()
@@ -1293,19 +958,15 @@ $(document).ready(function () {
         if ($('.pin').hasClass('pinned')) pinned = true;
 
         var label = 'null'
-        // console.log('label' + $('li.labels').eq(1).attr('value') );
         if ($('li.labels').eq(1).length > 0) {
             label = $('li.labels').eq(1).attr('value')
-            // ////alert(label)
         }
-
 
         if (title || note !== '') {
             console.log('saved');
             if (localStorage.getItem('notes') == null) {
                 localStorage.setItem('notes', '')
             }
-
             var n
             if (localStorage.getItem('notes') == '') {
                 n = 0
@@ -1313,7 +974,6 @@ $(document).ready(function () {
                 var obj = JSON.parse(localStorage.getItem('notes'))
                 n = Object.keys(obj).length
             }
-
 
             var newNoteObj = {
                 [n]: {
@@ -1330,15 +990,12 @@ $(document).ready(function () {
                     "color_theme": "default"
                 }
             }
-            console.log(label);
-            console.log(newNoteObj);
 
             var newNotes = []
 
             if (localStorage.getItem('notes') == '') {
                 newNotes.push(newNoteObj[n])
                 localStorage.setItem('notes', JSON.stringify(newNotes))
-
             } else {
                 let arr = JSON.parse(localStorage.getItem('notes'))
 
@@ -1349,34 +1006,25 @@ $(document).ready(function () {
                 newNotes.push(newNoteObj[n])
                 console.log(newNotes);
 
-
                 localStorage.setItem('notes', JSON.stringify(newNotes))
             }
         }
         showNote()
-        // End of saveToLocal()
-    }
+    }// End of saveToLocal()
 
 
 
-
+    // popup info
     $('.reminders, .sync, .user-login, .left-menu li, .duplicate').click(function () {
-        // ////alert("The feature curently not available!")
         $('.popupInfo').html("This feature curently not available!").show().css({
             'z-index': '9'
         })
-
         setTimeout(() => {
             $('.popupInfo').fadeOut().css({
                 'z-index': '0'
             })
         }, 1500)
-
     })
+    
 
-
-
-
-})
-
-
+}) // End of jQuery
