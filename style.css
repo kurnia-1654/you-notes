@@ -68,7 +68,7 @@ ul li, ol li{
 
 
 body {
-    font-family: 'Comfortaa';
+    font-family: 'Comfortaa', system-ui;
     background: var(--main-bg);
     color: var(--primary-text-color);
     
@@ -719,7 +719,7 @@ span.save-info {
 
 
 .note-title {
-    font-family: 'Comfortaa';
+    font-family: 'Comfortaa', system-ui;
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
@@ -728,7 +728,7 @@ span.save-info {
 }
 .note-body {
     max-height: 100vh;
-    font-family: 'Comfortaa';
+    font-family: 'Comfortaa', system-ui;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -1047,7 +1047,7 @@ button.add-label .plus-icon{
 .add-new-label span, .set-label span{
     
     display: block;    
-    font-family: 'Comfortaa';
+    font-family: 'Comfortaa', system-ui;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -1072,7 +1072,7 @@ button.add-label .plus-icon{
     font-size: 12px;
     margin: 26px 0;
 
-    font-family: 'Comfortaa';
+    font-family: 'Comfortaa', system-ui;
     font-style: normal;
     font-weight: 500;
     font-size: 12px;
@@ -1190,7 +1190,7 @@ button.add-label .plus-icon{
 }
 .notes-wrapper > span {
     display: block;
-    font-family: 'Comfortaa';
+    font-family: 'Comfortaa', system-ui;
     font-style: normal;
     font-weight: 500;
     font-size: 13px;
@@ -1221,7 +1221,7 @@ button.add-label .plus-icon{
 
 .deleted-wrapper > .info {
     display: block;
-    font-family: 'Comfortaa';
+    font-family: 'Comfortaa', system-ui;
     font-style: normal;
     font-weight: 600;
     font-size: 13px;

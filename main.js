@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+
     // history.pushState('', '')
 
     // Setting theme
@@ -160,7 +160,7 @@ $(document).ready(function () {
         }
 
         back_btn.click(function () {
-            window.onpopstate = function () {}
+            window.onpopstate = function () { }
             $('.search').fadeOut(150, showTrash())
             history.back()
         })
@@ -177,7 +177,7 @@ $(document).ready(function () {
         }
 
         back_btn.click(function () {
-            window.onpopstate = function () {}
+            window.onpopstate = function () { }
             $('.search').fadeOut(150, showNote())
             history.back()
         })
@@ -196,26 +196,26 @@ $(document).ready(function () {
     function showTrash() {
         if (localStorage.getItem('deleted') == null) {
             $('.empty-trash-info').show()
-        }else{
+        } else {
             $('.empty-trash-info').hide()
             $('#deleted-notes').show()
             $('.deleted-wrapper').show()
             var deleted = JSON.parse(localStorage.getItem('deleted'))
-            var deletedObj  = Object.assign({}, deleted) // convert array to obj
+            var deletedObj = Object.assign({}, deleted) // convert array to obj
             $('#deleted-notes').children().remove()
-            
+
             let n = Object.keys(deletedObj).length
-    
-            for (let a = n - 1; a >= 0; a--) { 
-                
-                if(deletedObj[a].pinned == true) { 
+
+            for (let a = n - 1; a >= 0; a--) {
+
+                if (deletedObj[a].pinned == true) {
                     $('#deleted-notes').append('<div class="note" id="' + a + '"><img class="thumbnail" alt=""/><h2 class="title">' + deletedObj[a].title + '</h2><p class="text">' + deletedObj[a].note + '</p><div class="info"><span class="date">' + deletedObj[a].date + '</span><span class="lbl"><span class="icon"></span>' + deletedObj[a].label + '</span><span style="display:none" class="mod-date">' + deletedObj[a].mod_date + '</div></div>')
-                }else {
+                } else {
                     $('#deleted-notes').append('<div class="note" id="' + a + '"><img class="thumbnail" alt=""/><h2 class="title">' + deletedObj[a].title + '</h2><p class="text">' + deletedObj[a].note + '</p><div class="info"><span class="date">' + deletedObj[a].date + '</span><span class="lbl"><span class="icon"></span>' + deletedObj[a].label + '</span><span style="display:none" class="mod-date">' + deletedObj[a].mod_date + '</div></div>')
                 }
             }
 
-            for (let b = 0; b < n; b++){
+            for (let b = 0; b < n; b++) {
                 $('#deleted-notes .lbl').eq(b).text('in Trash')
 
             }
@@ -224,7 +224,7 @@ $(document).ready(function () {
 
 
 
-        
+
 
         trash_view = true
         note_view = false
@@ -232,7 +232,7 @@ $(document).ready(function () {
         closeMenu()
         $('.empty-notes').hide()
         $('.notes-wrapper').hide()
-        
+
         $('.searchbox').text('Search your trash...')
         add_note.hide()
     }
@@ -253,8 +253,8 @@ $(document).ready(function () {
 
     function showNote() {
         closeMenu()
-        
-        if (localStorage.getItem('notes') != null){
+
+        if (localStorage.getItem('notes') != null) {
             var n
             if (localStorage.getItem('notes') == '') {
                 n = 0
@@ -270,7 +270,7 @@ $(document).ready(function () {
             // }else {
             //     n = arr.length
             // }
-            
+
             if (n > 0) {
                 empty_note = false
                 checkNote()
@@ -279,21 +279,21 @@ $(document).ready(function () {
                 empty_note = true
                 checkNote()
             }
-        }else {
-            
+        } else {
+
             empty_note = true
             checkNote()
         }
-       
-        
-        if(localStorage.getItem('notes') != null ){
+
+
+        if (localStorage.getItem('notes') != null) {
             loadNote()
         }
 
         trash_view = false
         note_view = true
 
-        
+
         $('.searchbox').text('Search your note...')
         $('.empty-trash-info, .deleted-wrapper').hide()
         add_note.show(30)
@@ -372,11 +372,11 @@ $(document).ready(function () {
         $('.setting-page .back-btn').click(function () {
             $('.setting-page').css({
                 bottom: "-100vh",
-    
+
             }).hide(200)
             popStateCloseOverlay()
         })
-    
+
     })
 
 
@@ -410,21 +410,21 @@ $(document).ready(function () {
 
         var date = new Date()
         var hour, minute
-        if(date.getHours() < 10){
+        if (date.getHours() < 10) {
             hour = "0" + date.getHours()
-        }else {
+        } else {
             hour = date.getHours()
         }
-        
+
         // console.log(hour);
-        if(date.getMinutes() < 10) {
+        if (date.getMinutes() < 10) {
             minute = "0" + date.getMinutes()
-        }else{
+        } else {
             minute = date.getMinutes()
         }
 
         var lastModTime = months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear() + " at " + hour + ":" + minute;
-        
+
         $('.last-mod').show(10).children().text(lastModTime)
 
     })
@@ -497,8 +497,8 @@ $(document).ready(function () {
         var createDate = months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
         $('.date-created span').html(createDate).show(10)
 
-        back_btn.click(()=> {
-            window.onpopstate = function () {}
+        back_btn.click(() => {
+            window.onpopstate = function () { }
             closeAddNote()
             history.back()
             back_btn.unbind('click')
@@ -507,12 +507,12 @@ $(document).ready(function () {
         popStateCloseOverlay()
     })
 
-    
-    
 
 
 
-    
+
+
+
 
 
     function closeAddNote() {
@@ -521,10 +521,10 @@ $(document).ready(function () {
             right: '-100vw',
         }).hide(150)
 
-        
-        saveToLocal(); 
+
+        saveToLocal();
         $('.del-lbl').parent().remove()
-        
+
 
         $('.form-note-input textarea').val("").height(20)
         $('.last-mod').hide()
@@ -534,7 +534,7 @@ $(document).ready(function () {
         // history.back()
     }
 
-    
+
 
 
     $('.pin').click(function () {
@@ -584,7 +584,7 @@ $(document).ready(function () {
         })
 
     })
-    
+
 
 
 
@@ -595,9 +595,9 @@ $(document).ready(function () {
 
     if (localStorage.getItem('label') == null) {
         localStorage.setItem('label', [])
-    } else if (localStorage.getItem('label') != ''){
+    } else if (localStorage.getItem('label') != '') {
         label = JSON.parse(localStorage.getItem('label'))
-        
+
     }
 
 
@@ -764,21 +764,21 @@ $(document).ready(function () {
 
 
 
-    function deleteNote(note, obj, id){
-        
+    function deleteNote(note, obj, id) {
+
         $('li.delete').click(function () {
-            
+
             // To delete note from notes index
             var newNoteArr = []
             let n = Object.keys(obj).length
-            
-            for (let i = 0; i < n; i++){
-                if(i != id) newNoteArr.push(obj[i]) // for filtering oldnote that deleted
+
+            for (let i = 0; i < n; i++) {
+                if (i != id) newNoteArr.push(obj[i]) // for filtering oldnote that deleted
             }
 
             if (newNoteArr.length == 0) {
                 localStorage.removeItem('notes')
-            }else {
+            } else {
                 localStorage.setItem('notes', JSON.stringify(newNoteArr))
             }
 
@@ -791,28 +791,28 @@ $(document).ready(function () {
 
             var newDeleted = []
             console.log(note);
-            if (localStorage.getItem('deleted') == null){
+            if (localStorage.getItem('deleted') == null) {
                 newDeleted.push(JSON.parse(note))
                 console.log(newDeleted);
-                localStorage.setItem('deleted', JSON.stringify(newDeleted) )
-            }else {
+                localStorage.setItem('deleted', JSON.stringify(newDeleted))
+            } else {
                 var deleted = JSON.parse(localStorage.getItem('deleted'))
                 console.log(deleted);
-                
+
                 deleted.forEach(note => {
                     newDeleted.push(note)
                 });
 
                 newDeleted.push(JSON.parse(note))
-                localStorage.setItem('deleted', JSON.stringify(newDeleted) )
+                localStorage.setItem('deleted', JSON.stringify(newDeleted))
             }
 
 
             $('.popupInfo').html("Moved to trash! <span class='showTrash'>View Trash</span>").show().css({
                 'z-index': '9'
-            }) 
-            
-            setTimeout(()=> {
+            })
+
+            setTimeout(() => {
                 $('.popupInfo').fadeOut().css({
                     'z-index': '0'
                 })
@@ -821,15 +821,15 @@ $(document).ready(function () {
             history.back()
             closeEditNote()
 
-            $('.showTrash').click(()=> {
+            $('.showTrash').click(() => {
                 $('.popupInfo').fadeOut().css({
                     'z-index': '0'
                 })
                 showTrash()
             })
-        
-            
-            
+
+
+
             $('li.delete').unbind('click')
         })
 
@@ -862,7 +862,7 @@ $(document).ready(function () {
     //     navigator.clipboard.writeText(value).then(() => ////alert('Copied to clipboard!'))
     // }
 
-    
+
 
 
 
@@ -884,7 +884,7 @@ $(document).ready(function () {
 
                 popStateCloseOverlay()
             }
-        }else if (history.state == 'add-note') {
+        } else if (history.state == 'add-note') {
 
             window.onpopstate = function () {
                 closeAddNote()
@@ -962,43 +962,43 @@ $(document).ready(function () {
     })
 
 
-    
+
 
 
     function loadNote() {
-        
+
 
         if (localStorage.getItem('notes') != '') {
-            
+
             var notes = JSON.parse(localStorage.getItem('notes'))
-            var notesObj  = Object.assign({}, notes) // convert array to obj
+            var notesObj = Object.assign({}, notes) // convert array to obj
             $('#pinned-notes, #all-notes').children().remove()
             $('#pinned-notes, #all-notes, .all').css('display', 'none')
             $('.notes-wrapper > span').eq(0).css('display', 'none')
 
             let n = Object.keys(notesObj).length
-    
+
             console.log(n);
-            for (let a = n - 1; a >= 0; a--) { 
-                
-                if(notesObj[a].pinned == true) { 
+            for (let a = n - 1; a >= 0; a--) {
+
+                if (notesObj[a].pinned == true) {
                     $('.notes-wrapper > span').eq(0).css('display', 'block')
                     $('#pinned-notes').css('display', 'block')
                     $('#pinned-notes').append('<div class="note" id="' + a + '"><div class="inner-wrapper"><span class="icon pinned"></span><img class="thumbnail" alt=""/><h2 class="title">' + notesObj[a].title + '</h2><p class="text">' + notesObj[a].note + '</p><div class="info"><span class="date">' + notesObj[a].date + '</span><span class="lbl"><span class="icon"></span>' + notesObj[a].label + '</span><span style="display:none" class="mod-date">' + notesObj[a].mod_date + '</div></div></div>')
-                }else {
+                } else {
                     $('#all-notes, .all').css('display', 'block')
                     $('#all-notes').append('<div class="note" id="' + a + '"><span class="icon pinned" style="visibility:hidden"></span><img class="thumbnail" alt=""/><h2 class="title">' + notesObj[a].title + '</h2><p class="text">' + notesObj[a].note + '</p><div class="info"><span class="date">' + notesObj[a].date + '</span><span class="lbl"><span class="icon"></span>' + notesObj[a].label + '</span><span style="display:none" class="mod-date">' + notesObj[a].mod_date + '</div></div>')
                 }
             }
-            for (let b = 0; b < n; b++){
-                if($('.lbl').eq(b).text() == "null") {
-                    
+            for (let b = 0; b < n; b++) {
+                if ($('.lbl').eq(b).text() == "null") {
+
                     $('.lbl').eq(b).hide()
                 }
 
             }
 
-        }else{
+        } else {
             $('.notes-wrapper > span').eq(0).css('display', 'none')
             $('#all-notes, .all').css('display', 'none')
             $('#all-notes, #pinned-notes').children().remove()
@@ -1008,7 +1008,7 @@ $(document).ready(function () {
 
         // console.log(typeof(notes));
         editNote()
-        
+
 
         // Using for loop  to conver arr to object
         // let notesObj2 = {}
@@ -1020,30 +1020,30 @@ $(document).ready(function () {
 
         // console.log(note[1].title);
         // errro undevined 
-        
+
         // console.log(notesObj[0][1]);
         // console.log(JSON.stringify(notesObj[1]));
-        
+
         // console.log(Object.keys(notesObj));
-        
+
 
 
     }
 
 
-   
-    
-    function editNote(){
+
+
+    function editNote() {
         $('.note').click(function () {
-            var id = $(this).attr('id') 
-            
-            
+            var id = $(this).attr('id')
+
+
             let index = JSON.parse(localStorage.getItem('notes'))[id]
             // console.log(index);
-            
+
             history.pushState('edit-note', null, id)
-            
-    
+
+
             var title = index.title
             var note = index.note
             var date = index.date
@@ -1051,22 +1051,22 @@ $(document).ready(function () {
             console.log(mod);
             var label = index.label
             // console.log(label);
-    
-            
+
+
             $('.add-note').show(0).css({
                 right: 0
             })
-    
-            
-            if($(this).parent().attr('id') == 'pinned-notes') {
-                
+
+
+            if ($(this).parent().attr('id') == 'pinned-notes') {
+
                 $('.pin').addClass('pinned')
-            }else {
+            } else {
                 $('.pin').removeClass('pinned')
             }
 
             $('main').fadeOut(0)
-    
+
             $('.add-note .note-title').val(title)
             $('.add-note .note-body').val(note)
             var titleHeight = document.querySelector('.note-title').scrollHeight
@@ -1075,20 +1075,20 @@ $(document).ready(function () {
             $('.add-note .note-title').innerHeight(titleHeight)
             $('.add-note .note-body').innerHeight(noteHeight)
             $('.date-created span').text(date)
-            
+
             $('.last-mod').show(0).children().html(mod)
-            
-            if(label != 'null') {
+
+            if (label != 'null') {
                 $('.note-label').append('<li class="labels" value="' + label + '"><span></span>' + label + '<span class="del-lbl">x</span></li>')
                 removeLabel()
             }
 
-            
 
-    
-           var editedNote
 
-           function makeNewNoteObj() {
+
+            var editedNote
+
+            function makeNewNoteObj() {
                 // get new value of note to be saved
                 var title = $('.note-title').val()
                 var id = $(location).attr('pathname').substring(1)
@@ -1096,11 +1096,11 @@ $(document).ready(function () {
                 var mod = $('.last-mod span').html()
                 var date = $('.date-created span').html()
                 var pinned = $('.pin').hasClass('pinned')
-            
+
                 var label = ''
                 if ($('li.labels').eq(1).length == 0) label = 'null'; else label = $('li.labels').eq(1).attr('value')
                 // if ($('.note-label').length == 0) label = 'null'; else label = $('.note-label .label .name').text()
-                
+
                 // $('.act-set-label').click(() => {
                 //     var selectedLabel = $('.label-selection').find('option:selected')
                 //     if (selectedLabel.val() != $('.label-selection option:eq(0)').val()) {
@@ -1109,7 +1109,7 @@ $(document).ready(function () {
                 //     }
                 //     // console.log(label);
                 // })
-                 
+
                 var editedNoteObj = {
                     [id]: {
                         "title": title,
@@ -1127,8 +1127,8 @@ $(document).ready(function () {
                 }
 
                 return editedNoteObj[id]
-           }
-            
+            }
+
 
             // $('textarea').on('input', function(){
             //    editedNote = makeNewNoteObj()
@@ -1138,71 +1138,71 @@ $(document).ready(function () {
             //     editedNote = makeNewNoteObj() 
             //     console.log(editedNote);
             // }) 
-            
+
             // $('.act-set-label').click(() => {
             //     editedNote = makeNewNoteObj() 
             //     console.log(editedNote);
             // })
 
-           
 
-            
 
-             
+
+
+
             var obj = JSON.parse(localStorage.getItem('notes'))
             var oldNote = JSON.stringify(obj[id])
             console.log(oldNote);
 
-            deleteNote(oldNote, obj, id) 
-            
-            if(history.state == 'edit-note') {
-                
+            deleteNote(oldNote, obj, id)
+
+            if (history.state == 'edit-note') {
+
                 window.onpopstate = function () {
                     // //alert(JSON.stringify(makeNewNoteObj()))
                     //alert('popstate')
                     saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
                     $('.back-btn').unbind('click')
-                } 
-                
+                }
+
                 // function save(e){
-    
+
                 //     // console.log(editNote); // not executed
                 //     saveEditedNote(e, oldNote, obj)
                 // }
-               
-        
-                $('.back-btn').click(()=> {
+
+
+                $('.back-btn').click(() => {
                     // //alert(JSON.stringify(makeNewNoteObj()))
-                    window.onpopstate = function () {}
-                        saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
+                    window.onpopstate = function () { }
+                    saveEditedNote(makeNewNoteObj(), oldNote, obj, id)
 
                     $('.back-btn').unbind('click')
                 })
             }
         })
-        
-    
-        
+
+
+
     }
-    
-    
+
+
     function closeEditNote() {
-            
+
         $('.add-note').css({
             right: '-100vw',
         }).hide(150)
-    
-        
+
+
         $('main').fadeIn(150)
-    
+
         // $('.form-note-input textarea').val("").height(20)
         // $('.last-mod').hide()
         // $('.more-menu-list').hide()
         $('.back-btn').unbind('click')
         history.back()
     }
-    
-    
+
+
     function saveEditedNote(editedNote, oldNote, obj, id) { // will be called in editNote()
         // //alert(id)
         //alert('save edited')
@@ -1210,69 +1210,69 @@ $(document).ready(function () {
         // //alert((editedNote.title == '') && (editedNote.note  == ''))
         console.log(editedNote);
         console.log(oldNote);
-    
-        if ((editedNote.title == '') && (editedNote.note  == '')) {
+
+        if ((editedNote.title == '') && (editedNote.note == '')) {
             // alert('sliced')
             obj.splice(id, 1)
-            if (obj.length == 0) localStorage.setItem('notes', '') ; else localStorage.setItem('notes', JSON.stringify(obj)) 
+            if (obj.length == 0) localStorage.setItem('notes', ''); else localStorage.setItem('notes', JSON.stringify(obj))
             // alert(JSON.stringify(obj))
             $('.popupInfo').html("Empty Note deleted!").show().css({
                 'z-index': '9'
-            }) 
-            
-            setTimeout(()=> {
+            })
+
+            setTimeout(() => {
                 $('.popupInfo').fadeOut().css({
                     'z-index': '0'
                 })
             }, 1500)
 
             loadNote()
-            
 
-            
-            
-            
+
+
+
+
         }
-        
+
         // console.log(JSON.stringify(editedNote[id]) === oldNote)
         // console.log(oldNote);
         // console.log(JSON.stringify(editedNote[id]));
-    
+
         // //alert('{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}' === '{"title":"2","date":"April 4, 2023","mod_date":"April 4, 2023 at 22:44","note":"","label":"null","pinned":false,"bg":false,"bg_url":"icon/ic-label.svg","thumb":false,"thumb_url":"","color_theme":"default"}')
-        
+
         // //alert(oldNote === editNote[id])
-        if((JSON.stringify(editedNote) !== oldNote) && (editedNote.title != '') && (editedNote.note  != '')) {
-            
-            
-                var newNoteArr = [] 
-                let n = Object.keys(obj).length
-                
-                console.log(n);
-        
-                
-                for (let i = n - 1; i >= 0; i--){
-                    if(i != id) newNoteArr.push(obj[i]) // for filtering oldnote that has edited
-                    
-                }
-                
-                console.log("editedNote[id]) : " + JSON.stringify(editedNote));
-                newNoteArr.push(editedNote) // after all notes filtered, then push edited note to the last index
-        
-        
-                localStorage.setItem('notes', JSON.stringify(newNoteArr))
-                loadNote()
-            
+        if ((JSON.stringify(editedNote) !== oldNote) && (editedNote.title != '') && (editedNote.note != '')) {
 
-            
-            
 
-            
-            
-        } 
+            var newNoteArr = []
+            let n = Object.keys(obj).length
+
+            console.log(n);
+
+
+            for (let i = n - 1; i >= 0; i--) {
+                if (i != id) newNoteArr.push(obj[i]) // for filtering oldnote that has edited
+
+            }
+
+            console.log("editedNote[id]) : " + JSON.stringify(editedNote));
+            newNoteArr.push(editedNote) // after all notes filtered, then push edited note to the last index
+
+
+            localStorage.setItem('notes', JSON.stringify(newNoteArr))
+            loadNote()
+
+
+
+
+
+
+
+        }
         closeEditNote()
-        
-        
-        
+
+
+
     }
 
 
@@ -1290,7 +1290,7 @@ $(document).ready(function () {
         var mod = $('.last-mod span').html()
         var date = $('.date-created span').html()
         var pinned = false
-            if($('.pin').hasClass('pinned')) pinned = true;
+        if ($('.pin').hasClass('pinned')) pinned = true;
 
         var label = 'null'
         // console.log('label' + $('li.labels').eq(1).attr('value') );
@@ -1299,13 +1299,13 @@ $(document).ready(function () {
             // ////alert(label)
         }
 
-        
+
         if (title || note !== '') {
             console.log('saved');
             if (localStorage.getItem('notes') == null) {
                 localStorage.setItem('notes', '')
             }
-    
+
             var n
             if (localStorage.getItem('notes') == '') {
                 n = 0
@@ -1313,8 +1313,8 @@ $(document).ready(function () {
                 var obj = JSON.parse(localStorage.getItem('notes'))
                 n = Object.keys(obj).length
             }
-            
-    
+
+
             var newNoteObj = {
                 [n]: {
                     "title": title,
@@ -1332,7 +1332,7 @@ $(document).ready(function () {
             }
             console.log(label);
             console.log(newNoteObj);
-            
+
             var newNotes = []
 
             if (localStorage.getItem('notes') == '') {
@@ -1341,7 +1341,7 @@ $(document).ready(function () {
 
             } else {
                 let arr = JSON.parse(localStorage.getItem('notes'))
-                
+
                 arr.forEach(e => {
                     newNotes.push(e)
                     console.log(e);
@@ -1349,7 +1349,7 @@ $(document).ready(function () {
                 newNotes.push(newNoteObj[n])
                 console.log(newNotes);
 
-                
+
                 localStorage.setItem('notes', JSON.stringify(newNotes))
             }
         }
@@ -1359,28 +1359,22 @@ $(document).ready(function () {
 
 
 
-    
-    $('.reminders, .sync, .user-login, .left-menu li, .duplicate').click(function(){
+
+    $('.reminders, .sync, .user-login, .left-menu li, .duplicate').click(function () {
         // ////alert("The feature curently not available!")
         $('.popupInfo').html("This feature curently not available!").show().css({
             'z-index': '9'
-        }) 
+        })
 
-        setTimeout(()=> {
+        setTimeout(() => {
             $('.popupInfo').fadeOut().css({
                 'z-index': '0'
             })
         }, 1500)
-        
-    }) 
 
-    
+    })
 
-    // if(navigator.share) ////alert("true"); else ////alert("false")
-    
 
-    
-   
 
 
 })
