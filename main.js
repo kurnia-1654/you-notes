@@ -808,10 +808,31 @@ $(document).ready(function () {
             }
 
 
-            showTrash()
-            closeEditNote()
+            $('.popupInfo').html("Moved to trash! <span class='showTrash'>View Trash</span>").show().css({
+                'z-index': '9'
+            }) 
             
+            setTimeout(()=> {
+                $('.popupInfo').fadeOut().css({
+                    'z-index': '0'
+                })
+            }, 2000)
+            showNote()
+            history.back()
+            closeEditNote()
+
+            $('.showTrash').click(()=> {
+                $('.popupInfo').fadeOut().css({
+                    'z-index': '0'
+                })
+                showTrash()
+            })
+        
+            
+            
+            $('li.delete').unbind('click')
         })
+
     }
 
     // Share
@@ -1191,19 +1212,19 @@ $(document).ready(function () {
         console.log(oldNote);
     
         if ((editedNote.title == '') && (editedNote.note  == '')) {
-            alert('sliced')
+            // alert('sliced')
             obj.splice(id, 1)
             if (obj.length == 0) localStorage.setItem('notes', '') ; else localStorage.setItem('notes', JSON.stringify(obj)) 
-            alert(JSON.stringify(obj))
+            // alert(JSON.stringify(obj))
             $('.popupInfo').html("Empty Note deleted!").show().css({
                 'z-index': '9'
             }) 
             
             setTimeout(()=> {
-                $('.popupInfo').hide().css({
+                $('.popupInfo').fadeOut().css({
                     'z-index': '0'
                 })
-            }, 1000)
+            }, 1500)
 
             loadNote()
             
@@ -1346,10 +1367,10 @@ $(document).ready(function () {
         }) 
 
         setTimeout(()=> {
-            $('.popupInfo').hide().css({
+            $('.popupInfo').fadeOut().css({
                 'z-index': '0'
             })
-        }, 1000)
+        }, 1500)
         
     }) 
 

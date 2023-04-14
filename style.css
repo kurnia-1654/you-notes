@@ -1319,6 +1319,28 @@ button.add-label .plus-icon{
 
 /* Popup */
 
-/* .popupInfo {
+.popupInfo {
+    top: 80%;
+    left: 50%;
+    width: calc(100% - 44px);
+    border-radius: 8px;
+    padding: 14px 20px;
+    font-size: 12px;
+    text-align: left;
+}
+
+.popupInfo .showTrash {
+    cursor: pointer;
     display: block;
-} */
+    float: right;
+    font-weight: 600;
+    background: var(--theme-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease-in;
+}
+
+.popupInfo .showTrash:hover{
+    font-weight: 800;
+}
